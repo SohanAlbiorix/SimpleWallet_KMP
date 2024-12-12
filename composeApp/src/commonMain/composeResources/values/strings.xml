@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<resources>
+    <!-- Login Strings -->
+    <string name="label_welcome_back">Welcome Back!</string>
+    <string name="label_email">Email</string>
+    <string name="label_password">Password</string>
+    <string name="txt_trouble_logging_in">Trouble logging in?</string>
+    <string name="txt_log_in">Log in</string>
+    <!-- END -->
+
+    <!-- Dashboard Strings-->
+    <string name="txt_hi_user">Hi, %1$s!</string>
+    <string name="label_activate_your_virtual_card_now">Activate your virtual card now!</string>
+    <string name="label_total_balance">Total balance</string>
+    <string name="label_my_points">My points</string>
+    <string name="label_transfer">Transfer</string>
+    <string name="label_rewards">Rewards</string>
+    <string name="label_bills">Bills</string>
+    <string name="label_finance">Finance</string>
+    <string name="txt_quick_loans_title">Quick Loans</string>
+    <string name="txt_quick_loans_desc">Instant personal loans anytime, anywhere - no collateral required.</string>
+    <string name="txt_cash_advance_title">Cash Advance</string>
+    <string name="txt_cash_advance_desc">Instant cash up to SGD 500 when you need it most. Quick and hassle-free!</string>
+    <string name="txt_easy_pay_title">Easy Pay</string>
+    <string name="txt_easy_pay_desc">Make shopping a breeze! Divide your online purchases into 3 easy monthly payments.</string>
+    <string name="txt_envelop_savings_title">Envelop Savings</string>
+    <string name="txt_envelop_savings_desc">Set goals, achieve dreams with Envelop Savings - One deposit at a time!</string>
+    <!-- END -->
+
+    <!-- Bottom Navigation -->
+    <string name="label_home">Home</string>
+    <string name="label_deposits">Deposits</string>
+    <string name="label_scan">Scan</string>
+    <string name="label_card">Card</string>
+    <!-- END -->
+
+    <!-- Account settings -->
+    <string name="label_account_settings">Account settings</string>
+    <string name="label_my_profile">My profile</string>
+    <string name="label_payments_and_transfer">Payments &amp; Transfer</string>
+    <string name="label_security">Security</string>
+    <string name="label_marketing_preferences">Marketing preferences</string>
+    <string name="label_support_center">Support center</string>
+    <string name="label_change_language">Change language</string>
+    <string name="label_log_out">Log out</string>
+    <string name="label_version">Version %1$s</string>
+    <string name="label_101_digital_pte_ltd">101 Digital Pte. Ltd.</string>
+    <!-- END -->
+
+    <!-- My profile -->
+    <string name="label_personal_details">Personal details</string>
+    <string name="label_preferred_name">Preferred name</string>
+    <string name="label_religion">Religion</string>
+    <string name="label_marital_status">Marital status</string>
+    <string name="label_mailing_address">Mailing address</string>
+    <string name="label_address_line_1">Address line 1</string>
+    <string name="label_address_line_2_optional">Address line 2(optional)</string>
+    <string name="label_postcode">Postcode</string>
+    <string name="label_city">City</string>
+    <string name="label_state">State</string>
+    <string name="label_employment_details">Employment details</string>
+    <string name="label_employment_type">Employment type</string>
+    <string name="label_employment_industry">Employment industry</string>
+    <string name="label_name_of_employer_or_company">Name of employer / company</string>
+    <string name="label_occupation">Occupation</string>
+    <string name="label_annual_income">Annual income</string>
+    <string name="label_update">Update</string>
+    <string name="label_profile_update_successful">Profile update successful</string>
+    <string name="label_done">Done</string>
+    <!-- END -->
+    <string name="back">Back</string>
+
+    <string name="no_data_available">No data available</string>
+</resources>

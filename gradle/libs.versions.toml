@@ -1,0 +1,39 @@
+[versions]
+agp = "8.5.2"
+android-compileSdk = "34"
+android-minSdk = "24"
+android-targetSdk = "34"
+androidx-activityCompose = "1.9.3"
+androidx-ui-tooling = "1.7.5"
+compose-multiplatform = "1.7.0"
+koin = "4.0.0"
+ktor = "3.0.0"
+junit = "4.13.2"
+kotlin = "2.0.21"
+navigationCompose = "2.8.0-alpha10"
+accompanist-version = "0.33.2-alpha"
+androidx-datastore = "1.1.1"
+
+[libraries]
+androidx-datastore-preferences = { module = "androidx.datastore:datastore-preferences", version.ref = "androidx-datastore" }
+androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose-viewmodel = { module = "io.insert-koin:koin-compose-viewmodel", version.ref = "koin" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktor" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
+navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
+system-ui-controller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist-version" }
+ktor-darwin-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
+
+[plugins]
+androidApplication = { id = "com.android.application", version.ref = "agp" }
+androidLibrary = { id = "com.android.library", version.ref = "agp" }
+composeMultiplatform = { id = "org.jetbrains.compose", version.ref = "compose-multiplatform" }
+composeCompiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
+kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+kotlin-parcelize = { id = "org.jetbrains.kotlin.plugin.parcelize", version.ref = "kotlin" }
+buildkonfig = { id = "com.codingfeline.buildkonfig", version = "+" }
