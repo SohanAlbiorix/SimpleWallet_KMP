@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
+import org.digital101.simplewallet.presentation.component.DefaultScreenUI
 import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginEvent
 import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginState
 import org.jetbrains.compose.resources.stringResource
@@ -36,25 +37,25 @@ fun LoginScreen(state: LoginState, events: (LoginEvent) -> Unit) {
     var passwordErrorMessage by remember { mutableStateOf("") }
 
     DefaultScreenUI {
-    Column(
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.Center,
-        modifier = Modifier.verticalScroll(rememberScrollState()).padding(16.dp)
-    ) {
+        Column(
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.Center,
+            modifier = Modifier.verticalScroll(rememberScrollState()).padding(16.dp)
+        ) {
 
-        CommonEditTextField(
-            text = email,
-            placeHolderText = stringResource(Res.string.label_email),
-            labelText = stringResource(Res.string.label_email),
-            isError = emailError,
-            errorMsg = emailErrorMessage,
-            onchange = { inputText ->
-                email.value = TextFieldValue(inputText, selection = TextRange(inputText.length))
-                if (inputText.isEmpty()) {
-                    emailError = true
-                } else {
-                    emailError = false
-                    emailErrorMessage = ""
+            CommonEditTextField(
+                text = email,
+                placeHolderText = stringResource(Res.string.label_email),
+                labelText = stringResource(Res.string.label_email),
+                isError = emailError,
+                errorMsg = emailErrorMessage,
+                onchange = { inputText ->
+                    email.value = TextFieldValue(inputText, selection = TextRange(inputText.length))
+                    if (inputText.isEmpty()) {
+                        emailError = true
+                    } else {
+                        emailError = false
+                        emailErrorMessage = ""
                 }
             }
         )
