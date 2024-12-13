@@ -122,7 +122,7 @@ fun LoginScreen(
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
                     if (emailErrorMessage.isEmpty() && passwordErrorMessage.isEmpty())
-                        events(LoginEvent.Login)
+                        events(LoginEvent.Authorize)
                 },
                 text = stringResource(Res.string.txt_log_in),
             )

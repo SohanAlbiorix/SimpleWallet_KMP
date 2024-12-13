@@ -9,7 +9,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.digital101.simplewallet.business.constants.CUSTOM_TAG
-import org.digital101.simplewallet.business.constants.DataStoreKeys
 import org.digital101.simplewallet.business.core.DataState
 import org.digital101.simplewallet.business.core.NetworkState
 import org.digital101.simplewallet.business.core.Queue
@@ -28,16 +27,6 @@ class LoginViewModel(
     val state: MutableState<LoginState> = mutableStateOf(LoginState())
     var emailErrorMessage = MutableStateFlow("")
     var passwordErrorMessage = MutableStateFlow("")
-
-    init {
-        viewModelScope.launch {
-            if (authInteractor.appDataStoreManager.readValue(DataStoreKeys.FLOW_ID)
-                    .isNullOrEmpty()
-            ) {
-                onTriggerEvent(LoginEvent.Authorize)
-            }
-        }
-    }
 
     fun onTriggerEvent(event: LoginEvent) {
         when (event) {
@@ -87,6 +76,7 @@ class LoginViewModel(
                 is DataState.Data -> {
                     state.value =
                         state.value.copy(isTokenValid = true)
+                    login()
                 }
 
                 is DataState.Loading -> {
@@ -99,6 +89,52 @@ class LoginViewModel(
 
     private fun login() {
         authInteractor.login(state.value.usernameLogin, state.value.passwordLogin)
+            .onEach { dataState ->
+                when (dataState) {
+                    is DataState.NetworkStatus -> {}
+                    is DataState.Response -> {
+                        onTriggerEvent(LoginEvent.Error(dataState.uiComponent))
+                    }
+
+                    is DataState.Data -> {
+                        state.value =
+                            state.value.copy(isTokenValid = true)
+                        resumeForToken()
+                    }
+
+                    is DataState.Loading -> {
+                        state.value =
+                            state.value.copy(progressBarState = dataState.progressBarState)
+                    }
+                }
+            }.launchIn(viewModelScope)
+    }
+
+    private fun resumeForToken() {
+        authInteractor.resumeForToken()
+            .onEach { dataState ->
+                when (dataState) {
+                    is DataState.NetworkStatus -> {}
+                    is DataState.Response -> {
+                        onTriggerEvent(LoginEvent.Error(dataState.uiComponent))
+                    }
+
+                    is DataState.Data -> {
+                        state.value =
+                            state.value.copy(isTokenValid = true)
+                        obtainToken()
+                    }
+
+                    is DataState.Loading -> {
+                        state.value =
+                            state.value.copy(progressBarState = dataState.progressBarState)
+                    }
+                }
+            }.launchIn(viewModelScope)
+    }
+
+    private fun obtainToken() {
+        authInteractor.obtainToken()
             .onEach { dataState ->
                 when (dataState) {
                     is DataState.NetworkStatus -> {}
