@@ -21,7 +21,7 @@ val bottomBar: @Composable (NavHostController) -> Unit = { navController ->
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute = navBackStackEntry?.destination?.route
 
-    NavigationBar(containerColor = MaterialTheme.colorScheme.inversePrimary) {
+    NavigationBar(containerColor = MaterialTheme.colorScheme.secondary) {
         screens.forEach { screen ->
             val isSelected = currentRoute?.contains(screen.route)
             NavigationBarItem(

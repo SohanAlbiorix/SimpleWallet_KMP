@@ -13,6 +13,7 @@ kotlin = "2.0.21"
 navigationCompose = "2.8.0-alpha10"
 accompanist-version = "0.33.2-alpha"
 androidx-datastore = "1.1.1"
+uiAndroidVersion = "1.7.6"
 
 [libraries]
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
@@ -28,6 +29,7 @@ navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-co
 system-ui-controller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist-version" }
 ktor-darwin-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
+androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroidVersion" }
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
