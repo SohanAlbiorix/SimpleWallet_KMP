@@ -5,9 +5,10 @@ import org.digital101.simplewallet.business.core.AppDataStoreManager
 import org.digital101.simplewallet.business.core.KtorHttpClient
 import org.digital101.simplewallet.business.datasource.network.auth.AuthService
 import org.digital101.simplewallet.business.datasource.network.auth.AuthServiceImpl
+import org.digital101.simplewallet.business.interactors.auth.AuthInteractor
 import org.digital101.simplewallet.common.Context
 import org.digital101.simplewallet.presentation.navigation.NavigationGraphViewModel
-import org.koin.core.context.startKoin
+import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginViewModel
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -16,17 +17,12 @@ fun dataModule(context: Context) = module {
 
     single<AuthService> { AuthServiceImpl(get()) }
     single<AppDataStore> { AppDataStoreManager(context) }
+    single { AuthInteractor(get(), get()) }
 }
 
 val viewModelModule = module {
     factoryOf(::NavigationGraphViewModel)
-}
-
-fun initKoin(context: Context) {
-    startKoin {
-        modules(
-            dataModule(context),
-            viewModelModule,
-        )
+    factory {
+        LoginViewModel(get())
     }
 }

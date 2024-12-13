@@ -23,6 +23,8 @@ import androidx.navigation.compose.dialog
 import androidx.navigation.navDeepLink
 import androidx.navigation.navigation
 import org.digital101.simplewallet.presentation.component.bottomBar
+import org.digital101.simplewallet.presentation.ui.auth.LoginScreen
+import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginViewModel
 import org.jetbrains.compose.resources.stringResource
 import org.koin.compose.viewmodel.koinViewModel
 import simplewallet.composeapp.generated.resources.Res
@@ -31,8 +33,9 @@ import simplewallet.composeapp.generated.resources.back
 @Composable
 fun NavigationGraph(navController: NavHostController) {
 
-    val viewModel = koinViewModel<NavigationGraphViewModel>()
-    val isTopBar = viewModel.isTopBar.collectAsState().value
+    val navigationViewModel = koinViewModel<NavigationGraphViewModel>()
+    val loginViewModel = koinViewModel<LoginViewModel>()
+    val isTopBar = navigationViewModel.isTopBar.collectAsState().value
 
     Scaffold(
         bottomBar = { bottomBar(navController) },
@@ -79,7 +82,10 @@ fun NavigationGraph(navController: NavHostController) {
                             uriPattern = "myapp://${Routes.Home.name}"
                         } // Note that this pattern has no relation to the route itself
                     )) {
-                    viewModel.isTopBar.value = false
+                    navigationViewModel.isTopBar.value = false
+                    LoginScreen(
+                        events = loginViewModel::onTriggerEvent
+                    )
                     /*ListScreen(navigateToDetails = { objectId ->
                         navController.navigate(
                             Routes.Home.Detail.createRoute(objectId)
@@ -97,7 +103,7 @@ fun NavigationGraph(navController: NavHostController) {
                             uriPattern = "myapp://${Routes.Deposits.name}"
                         } // Note that this pattern has no relation to the route itself
                     )) {
-                    viewModel.isTopBar.value = false
+                    navigationViewModel.isTopBar.value = false
                     /*ProfileScreen(navigateToDetails = { objectId ->
                         navController.navigate(
                             Routes.Profile.Detail.createRoute(objectId)
