@@ -2,7 +2,6 @@ package org.digital101.simplewallet.business.interactors.auth
 
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import org.digital101.simplewallet.business.constants.AUTHORIZATION_BEARER_TOKEN
 import org.digital101.simplewallet.business.constants.DataStoreKeys
 import org.digital101.simplewallet.business.core.AppDataStore
 import org.digital101.simplewallet.business.core.DataState
@@ -13,14 +12,14 @@ import org.digital101.simplewallet.business.util.handleUseCaseException
 
 class AuthInteractor(
     private val service: AuthService,
-    private val appDataStoreManager: AppDataStore,
+    val appDataStoreManager: AppDataStore,
 ) {
     fun authorize(
     ): Flow<DataState<String>> = flow {
         try {
             emit(DataState.Loading(progressBarState = ProgressBarState.ButtonLoading))
             val apiResponse = service.authorize()
-            apiResponse.alert?.let { alert ->
+            /*apiResponse.alert?.let { alert ->
                 emit(
                     DataState.Response(
                         uiComponent = UIComponent.Dialog(
@@ -28,16 +27,16 @@ class AuthInteractor(
                         )
                     )
                 )
-            }
+            }*/
             val result = apiResponse.result
             if (result != null) {
                 appDataStoreManager.setValue(
-                    DataStoreKeys.TOKEN,
-                    AUTHORIZATION_BEARER_TOKEN + result.id
+                    DataStoreKeys.FLOW_ID,
+                    result.id
                 )
-                println("---------------${appDataStoreManager.readValue(DataStoreKeys.TOKEN)}--------------------")
+                println("---------------${appDataStoreManager.readValue(DataStoreKeys.FLOW_ID)}--------------------")
             }
-            emit(DataState.Data(result?.status, true))
+            emit(DataState.Data(result?.status, apiResponse.status))
         } catch (e: Exception) {
             e.printStackTrace()
             emit(handleUseCaseException(e))
@@ -51,8 +50,12 @@ class AuthInteractor(
         password: String,
     ): Flow<DataState<String>> = flow {
         try {
-            emit(DataState.Loading(progressBarState = ProgressBarState.ButtonLoading))
-            val apiResponse = service.login(email, password)
+            emit(DataState.Loading(progressBarState = ProgressBarState.FullScreenLoading))
+            val apiResponse = service.login(
+                email,
+                password,
+                appDataStoreManager.readValue(DataStoreKeys.FLOW_ID) ?: ""
+            )
             apiResponse.alert?.let { alert ->
                 emit(
                     DataState.Response(
@@ -65,15 +68,11 @@ class AuthInteractor(
             val result = apiResponse.result
             if (result != null) {
                 appDataStoreManager.setValue(
-                    DataStoreKeys.TOKEN,
-                    AUTHORIZATION_BEARER_TOKEN + result
-                )
-                appDataStoreManager.setValue(
-                    DataStoreKeys.EMAIL,
-                    email
+                    DataStoreKeys.USERNAME,
+                    result.embedded.user.username
                 )
             }
-            emit(DataState.Data(result, apiResponse.status))
+            emit(DataState.Data(result?.status, apiResponse.status))
         } catch (e: Exception) {
             e.printStackTrace()
             emit(handleUseCaseException(e))

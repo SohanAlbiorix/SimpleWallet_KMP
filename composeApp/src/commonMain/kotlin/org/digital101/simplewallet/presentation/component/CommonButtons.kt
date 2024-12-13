@@ -82,6 +82,7 @@ fun DefaultButton(
     style: TextStyle = MaterialTheme.typography.bodyLarge,
     shape: Shape = MaterialTheme.shapes.extraLarge,
     text: String,
+    contentPadding: PaddingValues = PaddingValues(16.dp),
     onClick: () -> Unit,
 ) {
     ButtonLoading(
@@ -98,6 +99,7 @@ fun DefaultButton(
         shape = shape,
         onClick = onClick,
         progressBarState = progressBarState,
+        contentPadding = contentPadding,
     ) {
         Text(
             text = text,

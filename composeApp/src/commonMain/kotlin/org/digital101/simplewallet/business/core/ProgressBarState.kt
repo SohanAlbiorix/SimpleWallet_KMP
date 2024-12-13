@@ -8,9 +8,6 @@ sealed class ProgressBarState {
 
     data object FullScreenLoading : ProgressBarState()
 
-    data object LoadingWithLogo : ProgressBarState()
-
     data object Idle : ProgressBarState()
-
 }
 

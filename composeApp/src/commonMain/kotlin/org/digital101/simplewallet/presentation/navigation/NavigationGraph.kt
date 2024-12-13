@@ -6,22 +6,15 @@ import androidx.compose.material3.ElevatedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
 import org.digital101.simplewallet.presentation.ui.auth.AuthNav
-import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginViewModel
 import org.digital101.simplewallet.presentation.ui.home.MainNav
-import org.koin.compose.viewmodel.koinViewModel
 
 @Composable
 fun NavigationGraph(navController: NavHostController) {
-
-    val navigationViewModel = koinViewModel<NavigationGraphViewModel>()
-    val loginViewModel = koinViewModel<LoginViewModel>()
-    val isTopBar = navigationViewModel.isTopBar.collectAsState().value
 
     Box {
         NavHost(
