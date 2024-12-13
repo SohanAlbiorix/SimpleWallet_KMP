@@ -33,10 +33,11 @@ class AuthInteractor(
             if (result != null) {
                 appDataStoreManager.setValue(
                     DataStoreKeys.TOKEN,
-                    AUTHORIZATION_BEARER_TOKEN + result
+                    AUTHORIZATION_BEARER_TOKEN + result.id
                 )
+                println("---------------${appDataStoreManager.readValue(DataStoreKeys.TOKEN)}--------------------")
             }
-            emit(DataState.Data(result, apiResponse.status))
+            emit(DataState.Data(result?.status, true))
         } catch (e: Exception) {
             e.printStackTrace()
             emit(handleUseCaseException(e))

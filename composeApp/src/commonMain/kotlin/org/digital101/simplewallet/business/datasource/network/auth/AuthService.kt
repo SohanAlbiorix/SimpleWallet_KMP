@@ -1,5 +1,6 @@
 package org.digital101.simplewallet.business.datasource.network.auth
 
+import org.digital101.simplewallet.business.datasource.network.auth.responses.AuthorizeResponsesDTO
 import org.digital101.simplewallet.business.datasource.network.common.MainGenericResponse
 
 interface AuthService {
@@ -8,6 +9,6 @@ interface AuthService {
         const val LOGIN = "flows"
     }
 
-    suspend fun authorize(): MainGenericResponse<String?>
+    suspend fun authorize(): MainGenericResponse<AuthorizeResponsesDTO?>
     suspend fun login(email: String, password: String): MainGenericResponse<String?>
 }

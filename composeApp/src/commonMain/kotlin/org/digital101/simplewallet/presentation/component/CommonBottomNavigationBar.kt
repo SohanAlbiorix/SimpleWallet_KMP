@@ -13,7 +13,6 @@ import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
 import org.digital101.simplewallet.presentation.navigation.BottomNavItem
-import org.digital101.simplewallet.presentation.navigation.Routes
 
 val bottomBar: @Composable (NavHostController) -> Unit = { navController ->
     val screens = listOf(
@@ -36,7 +35,7 @@ val bottomBar: @Composable (NavHostController) -> Unit = { navController ->
                 },
                 onClick = {
                     navController.navigate(screen.route) {
-                        if (!screen.route.contains(Routes.Alerts.name)) {
+                        if (!screen.route.contains("Alerts")) {
                             navController.graph.findStartDestination().route?.let {
                                 popUpTo(it) {
                                     saveState = true

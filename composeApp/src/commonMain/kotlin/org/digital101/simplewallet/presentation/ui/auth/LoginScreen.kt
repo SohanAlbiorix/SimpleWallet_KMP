@@ -19,13 +19,14 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.unit.dp
 import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginEvent
+import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginState
 import org.jetbrains.compose.resources.stringResource
 import simplewallet.composeapp.generated.resources.Res
 import simplewallet.composeapp.generated.resources.label_email
 import simplewallet.composeapp.generated.resources.label_password
 
 @Composable
-fun LoginScreen(events: (LoginEvent) -> Unit) {
+fun LoginScreen(state: LoginState, events: (LoginEvent) -> Unit) {
 
     val email = remember { mutableStateOf(TextFieldValue("")) }
     val password = remember { mutableStateOf(TextFieldValue("")) }
@@ -34,6 +35,7 @@ fun LoginScreen(events: (LoginEvent) -> Unit) {
     var emailErrorMessage by remember { mutableStateOf("") }
     var passwordErrorMessage by remember { mutableStateOf("") }
 
+    DefaultScreenUI {
     Column(
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.Center,
@@ -83,5 +85,6 @@ fun LoginScreen(events: (LoginEvent) -> Unit) {
         ) {
             Text("Authorize")
         }
+    }
     }
 }

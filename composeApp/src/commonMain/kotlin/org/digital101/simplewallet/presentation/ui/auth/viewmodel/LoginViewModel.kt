@@ -29,6 +29,14 @@ class LoginViewModel(
                 authorize()
             }
 
+            is LoginEvent.OnUpdatePasswordLogin -> {
+                onUpdatePasswordLogin(event.value)
+            }
+
+            is LoginEvent.OnUpdateUsernameLogin -> {
+                onUpdateUsernameLogin(event.value)
+            }
+
             is LoginEvent.OnRemoveHeadFromQueue -> {
                 removeHeadMessage()
             }
@@ -66,6 +74,14 @@ class LoginViewModel(
                 }
             }
         }.launchIn(viewModelScope)
+    }
+
+    private fun onUpdatePasswordLogin(value: String) {
+        state.value = state.value.copy(passwordLogin = value)
+    }
+
+    private fun onUpdateUsernameLogin(value: String) {
+        state.value = state.value.copy(usernameLogin = value)
     }
 
     private fun appendToMessageQueue(uiComponent: UIComponent) {
