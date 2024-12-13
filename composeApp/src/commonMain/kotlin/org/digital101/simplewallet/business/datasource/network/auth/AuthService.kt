@@ -23,5 +23,5 @@ interface AuthService {
 
     suspend fun resumeForToken(flowId: String): MainGenericResponse<ResumeForTokenDTO?>
 
-    suspend fun obtainToken(flowId: String): MainGenericResponse<ObtainTokenResponseDTO?>
+    suspend fun obtainToken(code: String): MainGenericResponse<ObtainTokenResponseDTO?>
 }

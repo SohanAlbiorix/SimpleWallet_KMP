@@ -5,8 +5,9 @@ import kotlinx.serialization.Serializable
 @Serializable
 data class ObtainTokenRequestDTO(
     val scope: String,
+    val code_verifier: String,
     val client_id: String,
-    val acr_values: String,
-    val response_mode: String,
-    val response_type: String
+    val grant_type: String,
+    val code: String,
+
 )

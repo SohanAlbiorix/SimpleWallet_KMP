@@ -4,6 +4,8 @@ import io.ktor.client.HttpClient
 import io.ktor.client.plugins.HttpResponseValidator
 import io.ktor.client.plugins.HttpTimeout
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.cookies.AcceptAllCookiesStorage
+import io.ktor.client.plugins.cookies.HttpCookies
 import io.ktor.client.plugins.logging.LogLevel
 import io.ktor.client.plugins.logging.Logger
 import io.ktor.client.plugins.logging.Logging
@@ -15,12 +17,17 @@ import kotlinx.serialization.json.Json
 
 object KtorHttpClient {
     fun httpClient() = HttpClient {
+        followRedirects = false
         expectSuccess = false
         install(HttpTimeout) {
             val timeout = 60000L
             connectTimeoutMillis = timeout
             requestTimeoutMillis = timeout
             socketTimeoutMillis = timeout
+        }
+
+        install(HttpCookies) {
+            storage = AcceptAllCookiesStorage() // No cookies are stored
         }
 
         install(ResponseObserver) {

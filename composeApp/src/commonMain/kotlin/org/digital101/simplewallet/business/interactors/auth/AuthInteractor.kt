@@ -102,6 +102,7 @@ class AuthInteractor(
                     DataStoreKeys.RESUME_TOKEN,
                     result.authorizeResponse.code
                 )
+                println("RESUME TOKEN ${appDataStoreManager.readValue(DataStoreKeys.RESUME_TOKEN)}")
             }
             emit(DataState.Data(result?.status, apiResponse.status))
         } catch (e: Exception) {
@@ -115,7 +116,7 @@ class AuthInteractor(
     fun obtainToken(): Flow<DataState<String>> = flow {
         try {
             val apiResponse = service.obtainToken(
-                appDataStoreManager.readValue(DataStoreKeys.FLOW_ID) ?: ""
+                appDataStoreManager.readValue(DataStoreKeys.RESUME_TOKEN) ?: ""
             )
             apiResponse.alert?.let { alert ->
                 emit(
