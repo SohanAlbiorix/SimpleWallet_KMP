@@ -69,6 +69,7 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.logging)
             implementation(libs.androidx.datastore.preferences)
+            implementation(compose.materialIconsExtended)
         }
 
         iosMain.dependencies {

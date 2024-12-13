@@ -28,7 +28,6 @@ navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-co
 system-ui-controller = { module = "com.google.accompanist:accompanist-systemuicontroller", version.ref = "accompanist-version" }
 ktor-darwin-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
-
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
