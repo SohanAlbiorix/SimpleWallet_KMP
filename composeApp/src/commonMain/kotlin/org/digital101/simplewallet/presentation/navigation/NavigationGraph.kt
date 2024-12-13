@@ -21,47 +21,20 @@ fun NavigationGraph(navController: NavHostController) {
             navController = navController,
             startDestination = AppNavigation.Splash
         ) {
+
             composable<AppNavigation.Splash> {
                 AuthNav(navigateToMain = {
                     navController.popBackStack()
                     navController.navigate(AppNavigation.Main)
                 })
             }
+
             composable<AppNavigation.Main> {
                 MainNav {
                     navController.popBackStack()
                     navController.navigate(AppNavigation.Splash)
                 }
             }
-            /*navigation(
-                route = Routes.Home.name,
-                startDestination = Routes.Home.Overview.name,
-            ) {
-                composable(
-                    Routes.Home.Overview.name) {
-                    navigationViewModel.isTopBar.value = false
-
-                    *//*ListScreen(navigateToDetails = { objectId ->
-                        navController.navigate(
-                            Routes.Home.Detail.createRoute(objectId)
-                        )
-                    })*//*
-                }
-            }
-            navigation(
-                route = Routes.Deposits.name,
-                startDestination = Routes.Deposits.Overview.name,
-            ) {
-                composable(
-                    Routes.Deposits.Overview.name) {
-                    navigationViewModel.isTopBar.value = false
-                    *//*ProfileScreen(navigateToDetails = { objectId ->
-                        navController.navigate(
-                            Routes.Profile.Detail.createRoute(objectId)
-                        )
-                    })*//*
-                }
-            }*/
 
             dialog("Alerts") {
                 AlertDialog(title = {

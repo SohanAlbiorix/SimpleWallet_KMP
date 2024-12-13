@@ -12,6 +12,7 @@ import org.koin.compose.koinInject
 
 @Composable
 internal fun AuthNav(viewModel: LoginViewModel = koinInject(), navigateToMain: () -> Unit) {
+
     val navigator = rememberNavController()
 
     NavHost(

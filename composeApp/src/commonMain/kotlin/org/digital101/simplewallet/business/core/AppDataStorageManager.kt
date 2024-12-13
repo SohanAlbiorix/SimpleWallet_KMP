@@ -1,5 +1,6 @@
 package org.digital101.simplewallet.business.core
 
+import org.digital101.simplewallet.business.constants.DataStoreKeys
 import org.digital101.simplewallet.common.Context
 import org.digital101.simplewallet.common.getData
 import org.digital101.simplewallet.common.putData
@@ -19,5 +20,11 @@ class AppDataStoreManager(val context: Context) : AppDataStore {
         key: String,
     ): String? {
         return context.getData(key)
+    }
+
+    override suspend fun clear() {
+        DataStoreKeys.allKeys.forEach { key ->
+            setValue(key, "")
+        }
     }
 }

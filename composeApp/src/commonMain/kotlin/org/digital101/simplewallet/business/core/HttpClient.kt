@@ -14,9 +14,11 @@ import io.ktor.client.statement.HttpResponse
 import io.ktor.http.ContentType
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.json.Json
+import org.digital101.simplewallet.presentation.token_manager.TokenEvent
+import org.digital101.simplewallet.presentation.token_manager.TokenManager
 
 object KtorHttpClient {
-    fun httpClient() = HttpClient {
+    fun httpClient(tokenManager: TokenManager) = HttpClient {
         followRedirects = false
         expectSuccess = false
         install(HttpTimeout) {
@@ -38,26 +40,9 @@ object KtorHttpClient {
         HttpResponseValidator {
             validateResponse { response: HttpResponse ->
                 val statusCode = response.status.value
-                /*if (statusCode == 401) {
+                if (statusCode == 401) {
                     tokenManager.onTriggerEvent(TokenEvent.Logout)
-                }*/
-
-
-                /*
-                                    when (statusCode) {
-                                        in 300..399 -> throw RedirectResponseException(response)
-                                        in 400..499 -> throw ClientRequestException(response)
-                                        in 500..599 -> throw ServerResponseException(response)
-                                    }
-
-                                    if (statusCode >= 600) {
-                                        throw ResponseException(response)
-                                    }
-                                }
-
-                                handleResponseException { cause: Throwable ->
-                                    throw cause
-                                }*/
+                }
             }
         }
 

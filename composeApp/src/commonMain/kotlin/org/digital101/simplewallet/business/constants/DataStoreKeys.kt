@@ -5,4 +5,5 @@ object DataStoreKeys {
     const val FLOW_ID = "com.razzaghi.shoppingbykmp.FLOW_ID"
     const val USERNAME = "com.razzaghi.shoppingbykmp.USERNAME"
     const val RESUME_TOKEN = "com.razzaghi.shoppingbykmp.RESUME_TOKEN"
+    val allKeys = listOf(TOKEN, FLOW_ID, USERNAME, RESUME_TOKEN)
 }
