@@ -21,8 +21,7 @@ fun SplashScreen(
 ) {
 
     LaunchedEffect(state.navigateToMain) {
-        events(LoginEvent.Authorize)
-        delay(1000L)
+        delay(100L)
         if (state.navigateToMain) {
             navigateToMain()
         } else {

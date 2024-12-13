@@ -2,6 +2,7 @@ package org.digital101.simplewallet.presentation.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import org.digital101.simplewallet.business.core.NetworkState
 import org.digital101.simplewallet.business.core.ProgressBarState
 import org.digital101.simplewallet.business.core.Queue
 import org.digital101.simplewallet.business.core.UIComponent
+import org.digital101.simplewallet.common.ChangeStatusBarColors
 import org.jetbrains.compose.resources.painterResource
 import simplewallet.composeapp.generated.resources.Res
 import simplewallet.composeapp.generated.resources.no_wifi
@@ -85,7 +87,7 @@ fun DefaultScreenUI(
         ) {
             content()
             // process the queue
-            if (!queue.isEmpty()) {
+            /*if (!queue.isEmpty()) {
                 queue.peek()?.let { uiComponent ->
                     if (uiComponent is UIComponent.Dialog) {
                         CreateUIComponentDialog(
@@ -103,39 +105,48 @@ fun DefaultScreenUI(
                         )
                     }
                 }
-            }
+            }*/
             if (networkState == NetworkState.Failed && progressBarState == ProgressBarState.Idle) {
                 FailedNetworkScreen(onTryAgain = onTryAgain)
             }
-
-            if (progressBarState is ProgressBarState.LoadingWithLogo) {
-                LoadingWithLogoScreen()
-
-            }
-
-
             if (progressBarState is ProgressBarState.ScreenLoading || progressBarState is ProgressBarState.FullScreenLoading) {
-                CircularProgressIndicator()
+                ChangeStatusBarColors(MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f))
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f))
+                        .clickable(
+                            enabled = false,
+                            onClick = {}
+                        )
+                        .padding(16.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.Center
+                ) {
+                    CircularProgressIndicator()
+                }
+            } else {
+                ChangeStatusBarColors(MaterialTheme.colorScheme.primary)
             }
-
-
         }
     }
 }
 
 @Composable
-
 fun FailedNetworkScreen(onTryAgain: () -> Unit) {
-
+    ChangeStatusBarColors(MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f))
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
+            .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f))
+            .clickable(
+                enabled = false,
+                onClick = {}
+            )
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-
         Image(painterResource(Res.drawable.no_wifi), null)
         Spacer(modifier = Modifier.size(32.dp))
         Text(
@@ -155,40 +166,6 @@ fun FailedNetworkScreen(onTryAgain: () -> Unit) {
         ) {
             onTryAgain()
         }
-
-
-    }
-
-}
-
-@Composable
-fun LoadingWithLogoScreen() {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(MaterialTheme.colorScheme.background)
-    ) {
-
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-/*
-
-            Image(
-                painterResource("logo.xml"),
-                contentDescription = null,
-                modifier = Modifier.size(100.dp)
-            )
-            Spacer_16dp()
-*/
-
-            CircularProgressIndicator()
-
-        }
-
-
     }
 }
 

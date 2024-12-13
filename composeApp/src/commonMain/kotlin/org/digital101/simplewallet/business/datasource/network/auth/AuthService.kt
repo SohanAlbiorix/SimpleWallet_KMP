@@ -1,14 +1,23 @@
 package org.digital101.simplewallet.business.datasource.network.auth
 
 import org.digital101.simplewallet.business.datasource.network.auth.responses.AuthorizeResponsesDTO
+import org.digital101.simplewallet.business.datasource.network.auth.responses.LoginResponsesDTO
+import org.digital101.simplewallet.business.datasource.network.auth.responses.ResumeForTokenDTO
 import org.digital101.simplewallet.business.datasource.network.common.MainGenericResponse
 
 interface AuthService {
     companion object {
         const val AUTHORIZE = "as/authorize"
         const val LOGIN = "flows"
+        const val RESUME_FOR_TOKEN = "as/resume"
     }
 
     suspend fun authorize(): MainGenericResponse<AuthorizeResponsesDTO?>
-    suspend fun login(email: String, password: String): MainGenericResponse<String?>
+    suspend fun login(
+        email: String,
+        password: String,
+        flowId: String
+    ): MainGenericResponse<LoginResponsesDTO?>
+
+    suspend fun resumeForToken(flowId: String): MainGenericResponse<ResumeForTokenDTO?>
 }

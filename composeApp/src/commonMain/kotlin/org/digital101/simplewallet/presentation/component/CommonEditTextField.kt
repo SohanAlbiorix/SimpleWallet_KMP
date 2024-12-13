@@ -6,11 +6,11 @@ import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,19 +18,20 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.input.PasswordVisualTransformation
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.digital101.simplewallet.presentation.theme.BaseColors
 
 @Composable
 fun CommonEditTextField(
-    text: MutableState<TextFieldValue>,
+    text: String,
     placeHolderText: String,
     onchange: (String) -> Unit,
     labelText: String,
     isError: Boolean = false,
     errorMsg: String = "",
+    singleLine: Boolean = true,
     isPassword: Boolean = false, // Add flag to handle password field
     onPasswordVisibilityToggle: (() -> Unit)? = null // Function to toggle password visibility
 ) {
@@ -46,17 +47,21 @@ fun CommonEditTextField(
     OutlinedTextField(
         modifier = Modifier
             .fillMaxWidth(),
-        value = text.value,
+        value = text,
         onValueChange = { newValue ->
-            text.value = newValue
-            onchange(newValue.text)
+            onchange(newValue)
         },
+        singleLine = singleLine,
         placeholder = { Text(text = placeHolderText) },
-        label = { Text(text = labelText, color = Color.Black) },
+        label = { Text(text = labelText, color = BaseColors.Gray) },
         shape = RoundedCornerShape(12.dp),
         isError = isError,
         visualTransformation = visualTransformation, // Apply visual transformation for password
-        colors = OutlinedTextFieldDefaults.colors(focusedBorderColor = Color.Black),
+        colors = OutlinedTextFieldDefaults.colors(
+            errorBorderColor = MaterialTheme.colorScheme.error,
+            unfocusedBorderColor = BaseColors.Gray,
+            focusedBorderColor = MaterialTheme.colorScheme.secondary,
+        ),
         trailingIcon = {
             if (isPassword) {
                 IconButton(onClick = {

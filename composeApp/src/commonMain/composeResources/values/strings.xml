@@ -6,6 +6,7 @@
     <string name="label_password">Password</string>
     <string name="txt_trouble_logging_in">Trouble logging in?</string>
     <string name="txt_log_in">Log in</string>
+    <string name="label_app_logo">App logo</string>
     <!-- END -->
 
     <!-- Dashboard Strings-->
@@ -71,4 +72,9 @@
     <string name="back">Back</string>
 
     <string name="no_data_available">No data available</string>
+
+    <!-- Validation Messages -->
+    <string name="validation_please_enter_valid_email">Please enter valid email</string>
+    <string name="validation_password_must_be">Password length 6..15 must contain a digit a lower, a uppercase, special character and no white space</string>
+    <!-- END -->
 </resources>

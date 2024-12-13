@@ -32,8 +32,10 @@ internal fun AuthNav(viewModel: LoginViewModel = koinInject(), navigateToMain: (
         }
         composable<AuthNavigation.Login> {
             LoginScreen(
+                viewModel,
                 state = viewModel.state.value,
                 events = viewModel::onTriggerEvent,
+                navigateToMain = navigateToMain,
             )
         }
     }
