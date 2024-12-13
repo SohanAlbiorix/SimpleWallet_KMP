@@ -1,20 +1,31 @@
 package org.digital101.simplewallet.presentation.ui.auth
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.Button
-import androidx.compose.material3.Text
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import org.digital101.simplewallet.presentation.component.DEFAULT__BUTTON_SIZE_EXTRA
+import org.digital101.simplewallet.presentation.component.DefaultButton
+import org.digital101.simplewallet.presentation.component.DefaultScreenUI
 import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginEvent
+import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginState
 
 @Composable
-fun LoginScreen(events: (LoginEvent) -> Unit) {
-    Column {
-        Button(
-            onClick = {
-                events(LoginEvent.Authorize)
-            }
-        ) {
-            Text("Authorize")
+fun LoginScreen(state: LoginState, events: (LoginEvent) -> Unit) {
+    DefaultScreenUI {
+        Column {
+            DefaultButton(
+                progressBarState = state.progressBarState,
+                onClick = {
+
+                },
+                enableElevation = true,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(DEFAULT__BUTTON_SIZE_EXTRA),
+                text = "Authorize"
+            )
         }
     }
 }

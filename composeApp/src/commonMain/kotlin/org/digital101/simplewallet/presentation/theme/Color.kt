@@ -4,12 +4,10 @@ import androidx.compose.ui.graphics.Color
 
 object BaseColors {
 
-    //region Dark Colors
-    val Secondary = Color.Black
-    //endregion
-
     //region Light Colors
     val Primary = Color.White
+    val Tertiary = Color(0xFFFFCC00)
+    val Secondary = Color.Black
     //endregion
 
     //region Common Colors
