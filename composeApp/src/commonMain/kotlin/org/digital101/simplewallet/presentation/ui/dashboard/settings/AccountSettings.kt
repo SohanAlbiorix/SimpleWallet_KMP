@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.presentation.ui.settings
+package org.digital101.simplewallet.presentation.ui.dashboard.settings
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -21,6 +21,7 @@ import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -30,9 +31,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginEvent
-import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginState
-import org.digital101.simplewallet.presentation.ui.settings.model.ProfileModel
+import androidx.navigation.NavHostController
+import org.digital101.simplewallet.common.Context
+import org.digital101.simplewallet.common.getPlatform
+import org.digital101.simplewallet.presentation.navigation.MainNavigation
+import org.digital101.simplewallet.presentation.ui.dashboard.settings.model.ProfileModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import simplewallet.composeapp.generated.resources.Res
@@ -55,9 +58,15 @@ import simplewallet.composeapp.generated.resources.security
 import simplewallet.composeapp.generated.resources.support
 
 @Composable
-fun AccountSettings(state: LoginState, events: (LoginEvent) -> Unit) {
+fun AccountSettings(
+    context: Context,
+    navBottomBarController: NavHostController,
+    backClick: () -> Unit
+) {
     val profileItems = listOf(
-        ProfileModel(Res.drawable.profile, stringResource(Res.string.label_my_profile)),
+        ProfileModel(Res.drawable.profile, stringResource(Res.string.label_my_profile), onClick = {
+            navBottomBarController.navigate(MainNavigation.Profile)
+        }),
         ProfileModel(Res.drawable.payment, stringResource(Res.string.label_payments_and_transfer)),
         ProfileModel(Res.drawable.security, stringResource(Res.string.label_security)),
         ProfileModel(Res.drawable.market, stringResource(Res.string.label_marketing_preferences)),
@@ -73,13 +82,15 @@ fun AccountSettings(state: LoginState, events: (LoginEvent) -> Unit) {
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            Icon(
-                imageVector = Icons.Filled.ArrowBack,
-                contentDescription = "Back",
-                tint = Color.Black,
-                modifier = Modifier
-                    .padding(horizontal = 16.dp)
-            )
+            IconButton(
+                onClick = backClick,
+            ) {
+                Icon(
+                    imageVector = Icons.Filled.ArrowBack,
+                    contentDescription = "Back",
+                    tint = Color.Black,
+                )
+            }
             Text(
                 text = stringResource(Res.string.label_account_settings),
                 color = Color.Black,
@@ -131,7 +142,10 @@ fun AccountSettings(state: LoginState, events: (LoginEvent) -> Unit) {
 
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "${stringResource(Res.string.label_version)}",
+                    text = stringResource(
+                        Res.string.label_version,
+                        getPlatform(context).versionCode
+                    ),
                     color = Color.Black,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Normal)
                 )
@@ -153,7 +167,10 @@ fun ProfileItemView(profileItem: ProfileModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(16.dp)
+            .clickable {
+                profileItem.onClick?.invoke()
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(

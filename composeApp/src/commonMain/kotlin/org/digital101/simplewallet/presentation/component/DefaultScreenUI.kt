@@ -13,13 +13,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -29,8 +34,12 @@ import org.digital101.simplewallet.business.core.Queue
 import org.digital101.simplewallet.business.core.UIComponent
 import org.digital101.simplewallet.common.ChangeStatusBarColors
 import org.jetbrains.compose.resources.painterResource
+import org.jetbrains.compose.resources.stringResource
 import simplewallet.composeapp.generated.resources.Res
+import simplewallet.composeapp.generated.resources.menu
 import simplewallet.composeapp.generated.resources.no_wifi
+import simplewallet.composeapp.generated.resources.notification
+import simplewallet.composeapp.generated.resources.txt_hi_user
 
 /**
  * @param queue: Dialogs
@@ -43,38 +52,49 @@ fun DefaultScreenUI(
     progressBarState: ProgressBarState = ProgressBarState.Idle,
     networkState: NetworkState = NetworkState.Good,
     onTryAgain: () -> Unit = {},
-    titleToolbar: String? = null,
+    userName: String? = null,
+    isBottomSheet: Boolean = false,
     startIconToolbar: ImageVector? = null,
     endIconToolbar: ImageVector? = null,
-    onClickStartIconToolbar: () -> Unit = {},
+    onClickStartIconToolbar: (() -> Unit)? = null,
     onClickEndIconToolbar: () -> Unit = {},
     content: @Composable () -> Unit,
 ) {
 
     Scaffold(
         topBar = {
-            if (titleToolbar != null) {
+            if (userName != null && onClickStartIconToolbar != null) {
                 Row(
                     modifier = Modifier.fillMaxWidth().padding(16.dp),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    /*if (startIconToolbar != null) {
-                        CircleButton(
-                            imageVector = startIconToolbar,
-                            onClick = { onClickStartIconToolbar() })
-                    } else {
-                        Spacer_16dp()
-                    }
-                    Text(titleToolbar, style = MaterialTheme.typography.titleLarge)
-
-                    if (endIconToolbar != null) {
-                        CircleButton(
-                            imageVector = endIconToolbar,
-                            onClick = { onClickEndIconToolbar() })
-                    } else {
-                        Spacer_16dp()
-                    }*/
+                    Image(
+                        painter = painterResource(Res.drawable.menu),
+                        contentDescription = null,
+                        modifier = Modifier.clickable {
+                            onClickStartIconToolbar.invoke()
+                        }
+                    )
+                    Text(
+                        text = stringResource(Res.string.txt_hi_user, userName),
+                        color = MaterialTheme.colorScheme.secondary
+                    )
+                    Image(
+                        painter = painterResource(Res.drawable.notification),
+                        contentDescription = null,
+                    )
+                }
+            } else if (userName == null && onClickStartIconToolbar != null) {
+                IconButton(
+                    onClick = onClickStartIconToolbar,
+                    modifier = Modifier.padding(top = 16.dp, start = 24.dp),
+                ) {
+                    Icon(
+                        imageVector = Icons.Filled.ArrowBack,
+                        contentDescription = "Back",
+                        tint = Color.Black,
+                    )
                 }
             }
         }

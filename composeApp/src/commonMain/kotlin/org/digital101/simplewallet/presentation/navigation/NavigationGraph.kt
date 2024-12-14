@@ -10,16 +10,21 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.dialog
+import org.digital101.simplewallet.common.Context
+import org.digital101.simplewallet.presentation.SharedViewModel
+import org.digital101.simplewallet.presentation.token_manager.TokenEvent
 import org.digital101.simplewallet.presentation.ui.auth.AuthNav
-import org.digital101.simplewallet.presentation.ui.home.MainNav
+import org.digital101.simplewallet.presentation.ui.dashboard.MainNav
+import org.koin.compose.koinInject
 
 @Composable
-fun NavigationGraph(navController: NavHostController) {
-
+fun NavigationGraph(navController: NavHostController, context: Context) {
+    val viewModel: SharedViewModel = koinInject()
+    viewModel.tokenManager.onTriggerEvent(TokenEvent.CheckToken)
     Box {
         NavHost(
             navController = navController,
-            startDestination = AppNavigation.Splash
+            startDestination = if (!viewModel.tokenManager.state.value.isTokenAvailable) AppNavigation.Splash else AppNavigation.Main
         ) {
 
             composable<AppNavigation.Splash> {
@@ -30,7 +35,7 @@ fun NavigationGraph(navController: NavHostController) {
             }
 
             composable<AppNavigation.Main> {
-                MainNav {
+                MainNav(context) {
                     navController.popBackStack()
                     navController.navigate(AppNavigation.Splash)
                 }

@@ -13,6 +13,7 @@ import org.digital101.simplewallet.presentation.SharedViewModel
 import org.digital101.simplewallet.presentation.navigation.NavigationGraphViewModel
 import org.digital101.simplewallet.presentation.token_manager.TokenManager
 import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginViewModel
+import org.digital101.simplewallet.presentation.ui.dashboard.profile.viewmodel.ProfileViewModel
 import org.koin.core.module.dsl.factoryOf
 import org.koin.dsl.module
 
@@ -34,5 +35,8 @@ val viewModelModule = module {
     }
     factory {
         SharedViewModel(get())
+    }
+    factory {
+        ProfileViewModel()
     }
 }

@@ -13,6 +13,7 @@ object BaseColors {
     //region Common Colors
     val Red = Color.Red
     val Gray = Color(0xFF666666)
+    val BorderColor = Color(0xFFDDDDDD)
     val Pink = Color(0xFFE91E63)
     val Yellow = Color.Yellow
     val Orange = Color(0xFFFF5722)

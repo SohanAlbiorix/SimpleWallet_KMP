@@ -14,7 +14,6 @@ import org.koin.compose.koinInject
 internal fun AuthNav(viewModel: LoginViewModel = koinInject(), navigateToMain: () -> Unit) {
 
     val navigator = rememberNavController()
-
     NavHost(
         startDestination = AuthNavigation.Splash,
         navController = navigator,

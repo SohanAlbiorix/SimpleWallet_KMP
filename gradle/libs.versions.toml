@@ -14,6 +14,7 @@ navigationCompose = "2.8.0-alpha10"
 accompanist-version = "0.33.2-alpha"
 androidx-datastore = "1.1.1"
 uiAndroidVersion = "1.7.6"
+roomRuntimeAndroidVersion = "2.7.0-alpha12"
 
 [libraries]
 ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
@@ -30,6 +31,7 @@ system-ui-controller = { module = "com.google.accompanist:accompanist-systemuico
 ktor-darwin-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
 ktor-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
 androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroidVersion" }
+androidx-room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomRuntimeAndroidVersion" }
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }

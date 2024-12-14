@@ -76,5 +76,18 @@
     <!-- Validation Messages -->
     <string name="validation_please_enter_valid_email">Please enter valid email</string>
     <string name="validation_password_must_be">Password length 6..15 must contain a digit a lower, a uppercase, special character and no white space</string>
+    <string name="validation_please_enter_Preferred_name">Please enter preferredName</string>
+    <string name="validation_please_enter_Religion">Please enter Religion</string>
+    <string name="validation_please_enter_marital_status">Please enter marital status</string>
+    <string name="validation_please_enter_address1">Please enter first address</string>
+    <string name="validation_please_enter_address2">Please enter second address</string>
+    <string name="validation_please_enter_postcode">Please enter Postcode</string>
+    <string name="validation_please_enter_city">Please enter City</string>
+    <string name="validation_please_enter_state">Please enter State</string>
+    <string name="validation_please_enter_employ_type">Please enter employ type</string>
+    <string name="validation_please_enter_employ_industry">Please enter employ industry</string>
+    <string name="validation_please_enter_employ_name">Please enter employ name</string>
+    <string name="validation_please_enter_employ_occupation">Please enter occupation</string>
+    <string name="validation_please_enter_employ_annual_income">Please enter annual income </string>
     <!-- END -->
 </resources>
