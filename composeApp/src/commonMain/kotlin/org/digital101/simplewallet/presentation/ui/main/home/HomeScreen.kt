@@ -29,7 +29,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
-import org.digital101.simplewallet.common.Context
 import org.digital101.simplewallet.presentation.component.DefaultScreenUI
 import org.digital101.simplewallet.presentation.theme.BaseColors
 import org.digital101.simplewallet.presentation.ui.main.settings.AccountSettings
@@ -41,17 +40,17 @@ import simplewallet.composeapp.generated.resources.icon
 import simplewallet.composeapp.generated.resources.label_activate_your_virtual_card_now
 
 @Composable
-fun HomeScreen(navBottomBarController: NavHostController, context: Context) {
+fun HomeScreen(
+    navBottomBarController: NavHostController,
+) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
 
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            AccountSettings(context, navBottomBarController) {
-                coroutineScope.launch {
-                    drawerState.close()
-                }
+            AccountSettings(navBottomBarController) {
+                coroutineScope.launch { drawerState.close() }
             }
         }
     ) {

@@ -17,8 +17,8 @@ import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
-import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.Logout
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -38,6 +38,7 @@ import org.digital101.simplewallet.presentation.navigation.MainNavigation
 import org.digital101.simplewallet.presentation.ui.main.settings.model.ProfileModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import simplewallet.composeapp.generated.resources.Res
 import simplewallet.composeapp.generated.resources.arrow
 import simplewallet.composeapp.generated.resources.label_101_digital_pte_ltd
@@ -59,9 +60,8 @@ import simplewallet.composeapp.generated.resources.support
 
 @Composable
 fun AccountSettings(
-    context: Context,
     navBottomBarController: NavHostController,
-    backClick: () -> Unit
+    backClick: () -> Unit,
 ) {
     val profileItems = listOf(
         ProfileModel(Res.drawable.profile, stringResource(Res.string.label_my_profile), onClick = {
@@ -86,7 +86,7 @@ fun AccountSettings(
                 onClick = backClick,
             ) {
                 Icon(
-                    imageVector = Icons.Filled.ArrowBack,
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                     contentDescription = "Back",
                     tint = Color.Black,
                 )
@@ -128,7 +128,7 @@ fun AccountSettings(
                         .clickable { /* Handle logout action */ }
                 ) {
                     Icon(
-                        imageVector = Icons.Filled.Logout,
+                        imageVector = Icons.AutoMirrored.Filled.Logout,
                         contentDescription = null,
                         tint = Color.Black,
                         modifier = Modifier.padding(end = 8.dp)
@@ -144,7 +144,7 @@ fun AccountSettings(
                 Text(
                     text = stringResource(
                         Res.string.label_version,
-                        getPlatform(context).versionCode
+//                        getPlatform(context).versionCode,
                     ),
                     color = Color.Black,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Normal)

@@ -1,5 +1,6 @@
 package org.digital101.simplewallet.common
 
+import platform.Foundation.NSBundle
 import platform.UIKit.UIDevice
 
 class IOSPlatform : Platform {

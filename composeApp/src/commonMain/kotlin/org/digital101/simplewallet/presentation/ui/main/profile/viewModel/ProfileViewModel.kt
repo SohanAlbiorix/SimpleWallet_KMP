@@ -39,6 +39,7 @@ import simplewallet.composeapp.generated.resources.validation_please_enter_state
 class ProfileViewModel(
 ) : ViewModel() {
     val state: MutableState<ProfileState> = mutableStateOf(ProfileState())
+
     var preferredNameErrorMessage = MutableStateFlow("")
     var religionErrorMessage = MutableStateFlow("")
     var maritalStatusErrorMessage = MutableStateFlow("")
