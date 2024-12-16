@@ -31,6 +31,7 @@ import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
 import org.digital101.simplewallet.presentation.component.DefaultScreenUI
 import org.digital101.simplewallet.presentation.theme.BaseColors
+import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.ProfileViewModel
 import org.digital101.simplewallet.presentation.ui.main.settings.AccountSettings
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -41,7 +42,9 @@ import simplewallet.composeapp.generated.resources.label_activate_your_virtual_c
 
 @Composable
 fun HomeScreen(
-    navBottomBarController: NavHostController,
+    profileViewModel: ProfileViewModel,
+    navController: NavHostController,
+    logout: () -> Unit,
 ) {
     val drawerState = rememberDrawerState(DrawerValue.Closed)
     val coroutineScope = rememberCoroutineScope()
@@ -49,20 +52,20 @@ fun HomeScreen(
     ModalNavigationDrawer(
         drawerState = drawerState,
         drawerContent = {
-            AccountSettings(navBottomBarController) {
+            AccountSettings(navController, logout = logout) {
                 coroutineScope.launch { drawerState.close() }
             }
         }
     ) {
         DefaultScreenUI(
-            userName = "",
-            onClickStartIconToolbar = {
+            isHamburgerMenu = true,
+            onHamburgerClick = {
                 if (drawerState.isClosed) {
                     coroutineScope.launch {
                         drawerState.open()
                     }
                 }
-            }
+            },
         ) {
             Column(
                 modifier = Modifier
@@ -70,8 +73,7 @@ fun HomeScreen(
                     .padding(horizontal = 24.dp),
             ) {
                 Card(
-                    modifier = Modifier
-                        .fillMaxWidth(),
+                    modifier = Modifier.fillMaxWidth(),
                     colors = CardDefaults.cardColors(
                         containerColor = Color.White,
                         contentColor = Color.Black
@@ -101,7 +103,6 @@ fun HomeScreen(
                             contentDescription = null,
                         )
                     }
-
                 }
 
                 AtmCard()

@@ -6,11 +6,11 @@ import org.digital101.simplewallet.business.constants.DataStoreKeys
 import org.digital101.simplewallet.business.core.AppDataStore
 import org.digital101.simplewallet.business.core.DataState
 import org.digital101.simplewallet.business.core.ProgressBarState
-import org.digital101.simplewallet.business.datasource.network.auth.AuthService
+import org.digital101.simplewallet.business.network.pingOne.PingOneService
 import org.digital101.simplewallet.business.util.handleUseCaseException
 
 class AuthInteract(
-    private val service: AuthService,
+    private val service: PingOneService,
     private val appDataStoreManager: AppDataStore,
 ) {
 

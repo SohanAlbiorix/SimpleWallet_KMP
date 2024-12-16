@@ -1,6 +1,6 @@
 package org.digital101.simplewallet.business.core
 
-import org.digital101.simplewallet.business.datasource.network.common.JAlertResponse
+import org.digital101.simplewallet.business.network.common.JAlertResponse
 
 sealed class UIComponent {
 

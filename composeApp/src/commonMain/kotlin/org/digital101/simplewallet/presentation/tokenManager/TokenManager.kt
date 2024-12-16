@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import org.digital101.simplewallet.business.core.DataState
 import org.digital101.simplewallet.business.interactors.auth.CheckTokenInteract
-import org.digital101.simplewallet.business.interactors.neobank.LogoutInteract
+import org.digital101.simplewallet.business.interactors.auth.LogoutInteract
 
 class TokenManager(
     private val checkTokenInteract: CheckTokenInteract,

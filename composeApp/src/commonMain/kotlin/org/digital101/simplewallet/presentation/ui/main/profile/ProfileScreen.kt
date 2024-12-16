@@ -9,6 +9,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -17,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import org.digital101.simplewallet.domain.ToolBarButton
 import org.digital101.simplewallet.presentation.component.DefaultButton
 import org.digital101.simplewallet.presentation.component.DefaultScreenUI
 import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.ProfileEvent
@@ -48,7 +51,9 @@ fun ProfileScreen(
     onBackClick: () -> Unit,
 ) {
     val state = viewModel.state.value
+
     val events = viewModel::onTriggerEvent
+
     val preferredErrorMessage = viewModel.preferredNameErrorMessage.collectAsState().value
     val religionErrorMessage = viewModel.religionErrorMessage.collectAsState().value
     val maritalStatusErrorMessage = viewModel.maritalStatusErrorMessage.collectAsState().value
@@ -62,13 +67,19 @@ fun ProfileScreen(
     val employeeNameErrorMessage = viewModel.nameOfEmployeeErrorMessage.collectAsState().value
     val employeeOccupationErrorMessage = viewModel.occupationErrorMessage.collectAsState().value
     val employeeAnnualIncomeErrorMessage = viewModel.annualIncomeErrorMessage.collectAsState().value
+
     DefaultScreenUI(
-        onClickStartIconToolbar = onBackClick
+        leading = ToolBarButton(
+            icon = Icons.AutoMirrored.Filled.ArrowBack,
+            onClick = onBackClick,
+            description = "Back",
+        ),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 24.dp).verticalScroll(rememberScrollState())
+                .padding(horizontal = 24.dp)
+                .verticalScroll(rememberScrollState())
         ) {
 
             Spacer(modifier = Modifier.padding(top = 24.dp))

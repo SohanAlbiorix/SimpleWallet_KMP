@@ -1,5 +1,9 @@
 package org.digital101.simplewallet.presentation.ui.main.profile.viewModel
 
+import org.digital101.simplewallet.business.core.NetworkState
+import org.digital101.simplewallet.business.core.ProgressBarState
+import org.digital101.simplewallet.business.core.Queue
+import org.digital101.simplewallet.business.core.UIComponent
 
 data class ProfileState(
     val preferredUsername: String = "",
@@ -15,6 +19,8 @@ data class ProfileState(
     val nameOfEmployee: String = "",
     val occupation: String = "",
     val annualIncome: String = "",
-) {
 
-}
+    val progressBarState: ProgressBarState = ProgressBarState.Idle,
+    val networkState: NetworkState = NetworkState.Good,
+    val errorQueue: Queue<UIComponent> = Queue(mutableListOf()),
+)

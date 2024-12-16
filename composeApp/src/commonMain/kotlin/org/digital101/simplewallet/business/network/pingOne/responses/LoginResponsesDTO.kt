@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.business.datasource.network.auth.responses
+package org.digital101.simplewallet.business.network.pingOne.responses
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

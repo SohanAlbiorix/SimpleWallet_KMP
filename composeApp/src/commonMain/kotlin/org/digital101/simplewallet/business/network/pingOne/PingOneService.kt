@@ -1,12 +1,12 @@
-package org.digital101.simplewallet.business.datasource.network.auth
+package org.digital101.simplewallet.business.network.pingOne
 
-import org.digital101.simplewallet.business.datasource.network.auth.responses.AuthorizeResponsesDTO
-import org.digital101.simplewallet.business.datasource.network.auth.responses.LoginResponsesDTO
-import org.digital101.simplewallet.business.datasource.network.auth.responses.ObtainTokenResponseDTO
-import org.digital101.simplewallet.business.datasource.network.auth.responses.ResumeForTokenDTO
-import org.digital101.simplewallet.business.datasource.network.common.MainGenericResponse
+import org.digital101.simplewallet.business.network.common.MainGenericResponse
+import org.digital101.simplewallet.business.network.pingOne.responses.AuthorizeResponsesDTO
+import org.digital101.simplewallet.business.network.pingOne.responses.LoginResponsesDTO
+import org.digital101.simplewallet.business.network.pingOne.responses.ObtainTokenResponseDTO
+import org.digital101.simplewallet.business.network.pingOne.responses.ResumeForTokenDTO
 
-interface AuthService {
+interface PingOneService {
     companion object {
         const val AUTHORIZE = "as/authorize"
         const val LOGIN = "flows"

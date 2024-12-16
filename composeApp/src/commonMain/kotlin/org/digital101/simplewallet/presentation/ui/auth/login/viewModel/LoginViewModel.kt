@@ -14,7 +14,6 @@ import org.digital101.simplewallet.business.core.NetworkState
 import org.digital101.simplewallet.business.core.Queue
 import org.digital101.simplewallet.business.core.UIComponent
 import org.digital101.simplewallet.business.interactors.auth.AuthInteract
-import org.digital101.simplewallet.business.interactors.auth.CheckTokenInteract
 import org.digital101.simplewallet.business.util.isValidEmail
 import org.digital101.simplewallet.business.util.isValidPassword
 import org.jetbrains.compose.resources.getString

@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.business.interactors.neobank
+package org.digital101.simplewallet.business.interactors.auth
 
 
 import kotlinx.coroutines.flow.Flow

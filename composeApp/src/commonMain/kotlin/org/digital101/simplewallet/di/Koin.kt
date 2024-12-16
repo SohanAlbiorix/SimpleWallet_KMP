@@ -4,11 +4,14 @@ import kotlinx.serialization.json.Json
 import org.digital101.simplewallet.business.core.AppDataStore
 import org.digital101.simplewallet.business.core.AppDataStoreManager
 import org.digital101.simplewallet.business.core.KtorHttpClient
-import org.digital101.simplewallet.business.datasource.network.auth.AuthService
-import org.digital101.simplewallet.business.datasource.network.auth.AuthServiceImpl
 import org.digital101.simplewallet.business.interactors.auth.AuthInteract
 import org.digital101.simplewallet.business.interactors.auth.CheckTokenInteract
-import org.digital101.simplewallet.business.interactors.neobank.LogoutInteract
+import org.digital101.simplewallet.business.interactors.auth.LogoutInteract
+import org.digital101.simplewallet.business.interactors.neobank.UserInteract
+import org.digital101.simplewallet.business.network.neo.NeoService
+import org.digital101.simplewallet.business.network.neo.NeoServiceImpl
+import org.digital101.simplewallet.business.network.pingOne.PingOneService
+import org.digital101.simplewallet.business.network.pingOne.PingOneServiceImpl
 import org.digital101.simplewallet.common.Context
 import org.digital101.simplewallet.presentation.SharedViewModel
 import org.digital101.simplewallet.presentation.tokenManager.TokenManager
@@ -20,15 +23,18 @@ fun dataModule(context: Context) = module {
     single { Json { isLenient = true; ignoreUnknownKeys = true } }
     single { KtorHttpClient.httpClient(get()) }
 
-    single<AuthService> { AuthServiceImpl(get()) }
+    single<PingOneService> { PingOneServiceImpl(get()) }
+    single<NeoService> { NeoServiceImpl(get()) }
+
     single<AppDataStore> { AppDataStoreManager(context) }
+    single { TokenManager(get(), get()) }
 
     factory { SharedViewModel(get()) }
     factory { LoginViewModel(get()) }
-    factory { ProfileViewModel() }
+    factory { ProfileViewModel(get()) }
 
     single { AuthInteract(get(), get()) }
     single { CheckTokenInteract(get()) }
     single { LogoutInteract(get()) }
-    single { TokenManager(get(), get()) }
+    single { UserInteract(get(), get()) }
 }

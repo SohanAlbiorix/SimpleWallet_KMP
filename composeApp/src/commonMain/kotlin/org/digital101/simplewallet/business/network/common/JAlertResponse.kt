@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.business.datasource.network.common
+package org.digital101.simplewallet.business.network.common
 
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable

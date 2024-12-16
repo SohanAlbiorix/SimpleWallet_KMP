@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.business.datasource.network.auth.request
+package org.digital101.simplewallet.business.network.pingOne.request
 
 import kotlinx.serialization.Serializable
 

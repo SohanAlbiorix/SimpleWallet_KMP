@@ -1,6 +1,6 @@
 package org.digital101.simplewallet.business.util
 
-import org.digital101.simplewallet.business.datasource.network.common.JAlertResponse
+import org.digital101.simplewallet.business.network.common.JAlertResponse
 
 
 const val THROWABLE_DIVIDER = "THROWABLE_DIVIDER"

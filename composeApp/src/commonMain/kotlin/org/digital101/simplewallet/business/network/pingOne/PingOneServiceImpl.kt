@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.business.datasource.network.auth
+package org.digital101.simplewallet.business.network.pingOne
 
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -12,24 +12,23 @@ import io.ktor.http.contentType
 import io.ktor.http.encodedPath
 import io.ktor.http.takeFrom
 import org.digital101.simplewallet.BuildKonfig.API_KEY
-import org.digital101.simplewallet.business.constants.BASE_URL_AUTH
-import org.digital101.simplewallet.business.datasource.network.auth.request.LoginRequestDTO
-import org.digital101.simplewallet.business.datasource.network.auth.responses.AuthorizeResponsesDTO
-import org.digital101.simplewallet.business.datasource.network.auth.responses.LoginResponsesDTO
-import org.digital101.simplewallet.business.datasource.network.auth.responses.ObtainTokenResponseDTO
-import org.digital101.simplewallet.business.datasource.network.auth.responses.ResumeForTokenDTO
-import org.digital101.simplewallet.business.datasource.network.common.MainGenericResponse
+import org.digital101.simplewallet.business.constants.PING_ONE_BASE_URL
+import org.digital101.simplewallet.business.network.pingOne.request.LoginRequestDTO
+import org.digital101.simplewallet.business.network.pingOne.responses.AuthorizeResponsesDTO
+import org.digital101.simplewallet.business.network.pingOne.responses.LoginResponsesDTO
+import org.digital101.simplewallet.business.network.pingOne.responses.ObtainTokenResponseDTO
+import org.digital101.simplewallet.business.network.pingOne.responses.ResumeForTokenDTO
+import org.digital101.simplewallet.business.network.common.MainGenericResponse
 
-class AuthServiceImpl(
+class PingOneServiceImpl(
     private val httpClient: HttpClient
-) : AuthService {
-
+) : PingOneService {
 
     override suspend fun authorize(): MainGenericResponse<AuthorizeResponsesDTO?> {
         val response = httpClient.get {
             url {
-                takeFrom(BASE_URL_AUTH)
-                encodedPath += "${API_KEY}/${AuthService.AUTHORIZE}"
+                takeFrom(PING_ONE_BASE_URL)
+                encodedPath += "${API_KEY}/${PingOneService.AUTHORIZE}"
                 parameters.append("code_challenge_method", "S256")
                 parameters.append(
                     "code_challenge",
@@ -56,8 +55,8 @@ class AuthServiceImpl(
     ): MainGenericResponse<LoginResponsesDTO?> {
         val response = httpClient.post {
             url {
-                takeFrom(BASE_URL_AUTH)
-                encodedPath += "${API_KEY}/${AuthService.LOGIN}/$flowId"
+                takeFrom(PING_ONE_BASE_URL)
+                encodedPath += "${API_KEY}/${PingOneService.LOGIN}/$flowId"
             }
             contentType(
                 ContentType(
@@ -76,8 +75,8 @@ class AuthServiceImpl(
     override suspend fun resumeForToken(flowId: String): MainGenericResponse<ResumeForTokenDTO?> {
         val response = httpClient.get {
             url {
-                takeFrom(BASE_URL_AUTH)
-                encodedPath += "${API_KEY}/${AuthService.RESUME_FOR_TOKEN}"
+                takeFrom(PING_ONE_BASE_URL)
+                encodedPath += "${API_KEY}/${PingOneService.RESUME_FOR_TOKEN}"
                 parameters.append("flowId", flowId)
             }
         }
@@ -91,8 +90,8 @@ class AuthServiceImpl(
         return MainGenericResponse(
             result = httpClient.post {
                 url {
-                    takeFrom(BASE_URL_AUTH)
-                    encodedPath += "${API_KEY}/${AuthService.OBTAIN_TOKEN}"
+                    takeFrom(PING_ONE_BASE_URL)
+                    encodedPath += "${API_KEY}/${PingOneService.OBTAIN_TOKEN}"
                 }
                 contentType(ContentType.Application.Json)
                 setBody(

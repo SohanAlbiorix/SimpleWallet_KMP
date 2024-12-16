@@ -5,7 +5,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import org.digital101.simplewallet.business.core.DataState
+import org.digital101.simplewallet.business.interactors.neobank.UserInteract
 import org.digital101.simplewallet.business.util.isAddress1
 import org.digital101.simplewallet.business.util.isAddress2
 import org.digital101.simplewallet.business.util.isAnnualIncome
@@ -37,6 +41,7 @@ import simplewallet.composeapp.generated.resources.validation_please_enter_state
 
 
 class ProfileViewModel(
+    val userInteract: UserInteract,
 ) : ViewModel() {
     val state: MutableState<ProfileState> = mutableStateOf(ProfileState())
 
@@ -109,8 +114,36 @@ class ProfileViewModel(
             }
 
             is ProfileEvent.Error -> TODO()
+
             ProfileEvent.UpdateDate -> TODO()
         }
+    }
+
+    init {
+        loadProfile()
+    }
+
+    private fun loadProfile() {
+        userInteract.execute().onEach { dataState ->
+            when (dataState) {
+                is DataState.NetworkStatus -> {}
+                is DataState.Response -> {
+                    onTriggerEvent(ProfileEvent.Error(dataState.uiComponent))
+                }
+
+                is DataState.Data -> {
+                    state.value = state.value.copy(
+                        // TODO :: Bind your data here
+                    )
+                }
+
+                is DataState.Loading -> {
+                    state.value = state.value.copy(
+                        progressBarState = dataState.progressBarState,
+                    )
+                }
+            }
+        }.launchIn(viewModelScope)
     }
 
     fun OnUpdatePreferredName(value: String) {

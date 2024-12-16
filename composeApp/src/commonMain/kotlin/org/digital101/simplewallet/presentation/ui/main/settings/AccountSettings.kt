@@ -19,12 +19,15 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.automirrored.filled.Logout
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,13 +35,12 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import org.digital101.simplewallet.common.Context
 import org.digital101.simplewallet.common.getPlatform
+import org.digital101.simplewallet.presentation.LocalPlatformContext
 import org.digital101.simplewallet.presentation.navigation.MainNavigation
 import org.digital101.simplewallet.presentation.ui.main.settings.model.ProfileModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
 import simplewallet.composeapp.generated.resources.Res
 import simplewallet.composeapp.generated.resources.arrow
 import simplewallet.composeapp.generated.resources.label_101_digital_pte_ltd
@@ -58,11 +60,15 @@ import simplewallet.composeapp.generated.resources.profile
 import simplewallet.composeapp.generated.resources.security
 import simplewallet.composeapp.generated.resources.support
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AccountSettings(
     navBottomBarController: NavHostController,
+    logout: () -> Unit,
     backClick: () -> Unit,
 ) {
+    val context = LocalPlatformContext.current
+
     val profileItems = listOf(
         ProfileModel(Res.drawable.profile, stringResource(Res.string.label_my_profile), onClick = {
             navBottomBarController.navigate(MainNavigation.Profile)
@@ -76,21 +82,28 @@ fun AccountSettings(
 
     Scaffold(
         modifier = Modifier.windowInsetsPadding(WindowInsets.systemBars),
+        topBar = {
+            TopAppBar(
+                colors = TopAppBarDefaults.topAppBarColors(
+                    containerColor = MaterialTheme.colorScheme.background,
+                ),
+                navigationIcon = {
+                    IconButton(onClick = backClick) {
+                        Icon(
+                            imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                            contentDescription = "Back",
+                            tint = Color.Black,
+                        )
+                    }
+                },
+                title = {},
+            )
+        }
     ) { innerPadding ->
         Column(
-            modifier = Modifier
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize()
                 .padding(innerPadding)
         ) {
-            IconButton(
-                onClick = backClick,
-            ) {
-                Icon(
-                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                    contentDescription = "Back",
-                    tint = Color.Black,
-                )
-            }
             Text(
                 text = stringResource(Res.string.label_account_settings),
                 color = Color.Black,
@@ -125,7 +138,7 @@ fun AccountSettings(
                     horizontalArrangement = Arrangement.Center,
                     modifier = Modifier
                         .fillMaxWidth().padding(bottom = 24.dp)
-                        .clickable { /* Handle logout action */ }
+                        .clickable(onClick = logout)
                 ) {
                     Icon(
                         imageVector = Icons.AutoMirrored.Filled.Logout,
@@ -144,7 +157,7 @@ fun AccountSettings(
                 Text(
                     text = stringResource(
                         Res.string.label_version,
-//                        getPlatform(context).versionCode,
+                        getPlatform(context).versionCode,
                     ),
                     color = Color.Black,
                     style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Normal)

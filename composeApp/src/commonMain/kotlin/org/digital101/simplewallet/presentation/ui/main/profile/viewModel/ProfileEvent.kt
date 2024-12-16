@@ -4,6 +4,7 @@ import org.digital101.simplewallet.business.core.UIComponent
 
 sealed class ProfileEvent {
     data object UpdateDate : ProfileEvent()
+
     data class OnUpdatePreferredName(val value: String) : ProfileEvent()
     data class OnUpdateReligion(val value: String) : ProfileEvent()
     data class OnUpdateMaritalStatus(val value: String) : ProfileEvent()
@@ -17,7 +18,6 @@ sealed class ProfileEvent {
     data class OnUpdateEmployName(val value: String) : ProfileEvent()
     data class OnUpdateEmployOccupation(val value: String) : ProfileEvent()
     data class OnUpdateEmployAnnualIncome(val value: String) : ProfileEvent()
-
 
     data class Error(
         val uiComponent: UIComponent

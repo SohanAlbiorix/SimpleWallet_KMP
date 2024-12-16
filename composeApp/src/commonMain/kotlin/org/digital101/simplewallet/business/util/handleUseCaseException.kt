@@ -2,7 +2,7 @@ package org.digital101.simplewallet.business.util
 
 import org.digital101.simplewallet.business.core.DataState
 import org.digital101.simplewallet.business.core.UIComponent
-import org.digital101.simplewallet.business.datasource.network.common.JAlertResponse
+import org.digital101.simplewallet.business.network.common.JAlertResponse
 
 
 fun <T> handleUseCaseException(e: Exception): DataState<T> {
