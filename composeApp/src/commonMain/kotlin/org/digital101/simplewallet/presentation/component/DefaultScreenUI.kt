@@ -145,6 +145,7 @@ fun DefaultScreenUI(
             contentAlignment = Alignment.Center
         ) {
             content()
+
             // process the queue
             if (!queue.isEmpty()) {
                 queue.peek()?.let { uiComponent ->
@@ -169,27 +170,27 @@ fun DefaultScreenUI(
             if (networkState == NetworkState.Failed && progressBarState == ProgressBarState.Idle) {
                 FailedNetworkScreen(onTryAgain = onTryAgain)
             }
-
-            if (progressBarState is ProgressBarState.ScreenLoading || progressBarState is ProgressBarState.FullScreenLoading) {
-                ChangeStatusBarColors(MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f))
-                Column(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f))
-                        .clickable(
-                            enabled = false,
-                            onClick = {}
-                        )
-                        .padding(16.dp),
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.Center
-                ) {
-                    CircularProgressIndicator()
-                }
-            } else {
-                ChangeStatusBarColors(MaterialTheme.colorScheme.primary)
-            }
         }
+    }
+
+    if (progressBarState is ProgressBarState.ScreenLoading || progressBarState is ProgressBarState.FullScreenLoading) {
+        ChangeStatusBarColors(MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f))
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(MaterialTheme.colorScheme.secondary.copy(alpha = 0.8f))
+                .clickable(
+                    enabled = false,
+                    onClick = {}
+                )
+                .padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            CircularProgressIndicator()
+        }
+    } else {
+        ChangeStatusBarColors(MaterialTheme.colorScheme.primary)
     }
 }
 

@@ -58,7 +58,6 @@ fun ButtonLoading(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(4.dp)
         ) {
-
             AnimatedVisibility(visible = (progressBarState == ProgressBarState.ButtonLoading || progressBarState == ProgressBarState.FullScreenLoading)) {
                 CircularProgressIndicator(
                     modifier = Modifier
@@ -67,7 +66,6 @@ fun ButtonLoading(
                     color = if (enabled) MaterialTheme.colorScheme.background else MaterialTheme.colorScheme.primary,
                 )
             }
-
             content()
         }
     }
