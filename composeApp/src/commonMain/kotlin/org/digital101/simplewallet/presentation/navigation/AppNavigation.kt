@@ -11,4 +11,6 @@ sealed interface AppNavigation {
     @Serializable
     data object Main : AppNavigation
 
+    @Serializable
+    data object Profile : MainNavigation
 }

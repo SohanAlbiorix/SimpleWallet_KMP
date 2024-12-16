@@ -6,9 +6,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import org.digital101.simplewallet.common.Context
 import org.digital101.simplewallet.di.dataModule
@@ -17,6 +19,8 @@ import org.digital101.simplewallet.presentation.theme.AppTheme
 import org.digital101.simplewallet.presentation.tokenManager.TokenEvent
 import org.digital101.simplewallet.presentation.ui.auth.AuthNav
 import org.digital101.simplewallet.presentation.ui.main.MainNav
+import org.digital101.simplewallet.presentation.ui.main.profile.ProfileScreen
+import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.ProfileViewModel
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
 
@@ -34,10 +38,15 @@ internal fun App(context: Context) {
                 val navigator = rememberNavController()
                 val viewModel: SharedViewModel = koinInject()
 
+                val navBackStackEntry by navigator.currentBackStackEntryAsState()
+                val currentRoute = navBackStackEntry?.destination?.route
+
                 LaunchedEffect(key1 = viewModel.tokenManager.state.value.isTokenAvailable) {
                     if (!viewModel.tokenManager.state.value.isTokenAvailable) {
-                        navigator.popBackStack()
-                        navigator.navigate(AppNavigation.Auth)
+                        if (currentRoute?.contains(AppNavigation.Auth.toString()) != true) {
+                            navigator.popBackStack()
+                            navigator.navigate(AppNavigation.Auth)
+                        }
                     }
                 }
 
@@ -54,8 +63,21 @@ internal fun App(context: Context) {
                             })
                         }
                         composable<AppNavigation.Main> {
-                            MainNav {
-                                viewModel.tokenManager.onTriggerEvent(TokenEvent.Logout)
+                            MainNav(
+                                profileViewModel = koinInject(),
+                                logout = {
+                                    viewModel.tokenManager.onTriggerEvent(TokenEvent.Logout)
+                                    navigator.navigate(AppNavigation.Auth)
+                                }) {
+                                navigator.navigate(AppNavigation.Profile)
+                            }
+                        }
+
+                        composable<AppNavigation.Profile> {
+                            ProfileScreen(
+                                viewModel = koinInject(),
+                            ) {
+                                navigator.popBackStack()
                             }
                         }
                     }

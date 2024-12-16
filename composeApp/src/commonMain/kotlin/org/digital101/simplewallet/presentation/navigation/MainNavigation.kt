@@ -8,8 +8,5 @@ sealed interface MainNavigation {
     data object Settings : MainNavigation
 
     @Serializable
-    data object Profile : MainNavigation
-
-    @Serializable
     data object Logout : MainNavigation
 }

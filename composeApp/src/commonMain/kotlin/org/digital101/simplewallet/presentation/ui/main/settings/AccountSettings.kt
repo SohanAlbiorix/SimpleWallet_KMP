@@ -34,10 +34,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavHostController
 import org.digital101.simplewallet.common.getPlatform
 import org.digital101.simplewallet.presentation.LocalPlatformContext
-import org.digital101.simplewallet.presentation.navigation.MainNavigation
 import org.digital101.simplewallet.presentation.ui.main.settings.model.ProfileModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
@@ -63,7 +61,7 @@ import simplewallet.composeapp.generated.resources.support
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AccountSettings(
-    navBottomBarController: NavHostController,
+    navigateToProfile: () -> Unit,
     logout: () -> Unit,
     backClick: () -> Unit,
 ) {
@@ -71,13 +69,34 @@ fun AccountSettings(
 
     val profileItems = listOf(
         ProfileModel(Res.drawable.profile, stringResource(Res.string.label_my_profile), onClick = {
-            navBottomBarController.navigate(MainNavigation.Profile)
+            navigateToProfile()
+            backClick()
         }),
-        ProfileModel(Res.drawable.payment, stringResource(Res.string.label_payments_and_transfer)),
-        ProfileModel(Res.drawable.security, stringResource(Res.string.label_security)),
-        ProfileModel(Res.drawable.market, stringResource(Res.string.label_marketing_preferences)),
-        ProfileModel(Res.drawable.support, stringResource(Res.string.label_support_center)),
-        ProfileModel(Res.drawable.language, stringResource(Res.string.label_change_language))
+        ProfileModel(
+            Res.drawable.payment,
+            stringResource(Res.string.label_payments_and_transfer),
+            onClick = backClick
+        ),
+        ProfileModel(
+            Res.drawable.security,
+            stringResource(Res.string.label_security),
+            onClick = backClick
+        ),
+        ProfileModel(
+            Res.drawable.market,
+            stringResource(Res.string.label_marketing_preferences),
+            onClick = backClick
+        ),
+        ProfileModel(
+            Res.drawable.support,
+            stringResource(Res.string.label_support_center),
+            onClick = backClick
+        ),
+        ProfileModel(
+            Res.drawable.language,
+            stringResource(Res.string.label_change_language),
+            onClick = backClick
+        )
     )
 
     Scaffold(

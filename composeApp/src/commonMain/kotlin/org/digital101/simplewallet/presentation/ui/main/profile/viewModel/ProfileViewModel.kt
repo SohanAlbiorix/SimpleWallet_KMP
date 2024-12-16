@@ -136,9 +136,9 @@ class ProfileViewModel(
                 }
 
                 is DataState.Data -> {
+                    // TODO :: Bind your data here
                     state.value = state.value.copy(
-                        // TODO :: Bind your data here
-
+                        preferredUsername = dataState.data?.userName ?: "",
                     )
                 }
 

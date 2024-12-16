@@ -19,8 +19,13 @@ class TokenManager(
 
     fun onTriggerEvent(event: TokenEvent) {
         when (event) {
-            is TokenEvent.CheckToken -> checkToken()
-            is TokenEvent.Logout -> logout()
+            is TokenEvent.CheckToken -> {
+                checkToken()
+            }
+
+            is TokenEvent.Logout -> {
+                logout()
+            }
         }
     }
 
