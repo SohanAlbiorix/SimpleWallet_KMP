@@ -113,9 +113,13 @@ class ProfileViewModel(
                 onUpdateIncome(event.value)
             }
 
-            is ProfileEvent.Error -> TODO()
+            is ProfileEvent.Error -> {
 
-            ProfileEvent.UpdateDate -> TODO()
+            }
+
+            ProfileEvent.UpdateDate -> {
+
+            }
         }
     }
 
@@ -134,6 +138,7 @@ class ProfileViewModel(
                 is DataState.Data -> {
                     state.value = state.value.copy(
                         // TODO :: Bind your data here
+
                     )
                 }
 

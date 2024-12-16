@@ -1,6 +1,7 @@
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
 import androidx.compose.material.icons.filled.VisibilityOff
@@ -28,6 +29,7 @@ fun CommonEditTextField(
     text: String,
     placeHolderText: String,
     onchange: (String) -> Unit,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     labelText: String,
     isError: Boolean = false,
     errorMsg: String = "",
@@ -56,6 +58,7 @@ fun CommonEditTextField(
         label = { Text(text = labelText, color = BaseColors.Gray) },
         shape = RoundedCornerShape(12.dp),
         isError = isError,
+        keyboardOptions = keyboardOptions,
         visualTransformation = visualTransformation, // Apply visual transformation for password
         colors = OutlinedTextFieldDefaults.colors(
             errorBorderColor = MaterialTheme.colorScheme.error,

@@ -32,7 +32,6 @@ ktor-darwin-ios = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" 
 ktor-ios = { module = "io.ktor:ktor-client-ios", version.ref = "ktor" }
 androidx-ui-android = { group = "androidx.compose.ui", name = "ui-android", version.ref = "uiAndroidVersion" }
 androidx-room-runtime-android = { group = "androidx.room", name = "room-runtime-android", version.ref = "roomRuntimeAndroidVersion" }
-
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
