@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.presentation.ui.dashboard.profile.viewmodel
+package org.digital101.simplewallet.presentation.ui.main.profile.viewModel
 
 
 data class ProfileState(

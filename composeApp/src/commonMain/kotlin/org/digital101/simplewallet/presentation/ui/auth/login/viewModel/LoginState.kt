@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.presentation.ui.auth.viewmodel
+package org.digital101.simplewallet.presentation.ui.auth.login.viewModel
 
 import org.digital101.simplewallet.business.core.NetworkState
 import org.digital101.simplewallet.business.core.ProgressBarState

@@ -9,5 +9,4 @@ sealed interface MainNavigation {
 
     @Serializable
     data object Profile : MainNavigation
-
 }

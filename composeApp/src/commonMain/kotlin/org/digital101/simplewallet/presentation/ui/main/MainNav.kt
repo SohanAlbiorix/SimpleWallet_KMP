@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.presentation.ui.dashboard
+package org.digital101.simplewallet.presentation.ui.main
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -9,19 +9,18 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import org.digital101.simplewallet.common.Context
 import org.digital101.simplewallet.presentation.component.bottomBar
 import org.digital101.simplewallet.presentation.navigation.BottomNavItem
 import org.digital101.simplewallet.presentation.navigation.MainNavigation
-import org.digital101.simplewallet.presentation.ui.dashboard.home.HomeScreen
-import org.digital101.simplewallet.presentation.ui.dashboard.profile.ProfileScreen
-import org.digital101.simplewallet.presentation.ui.dashboard.profile.viewmodel.ProfileViewModel
+import org.digital101.simplewallet.presentation.ui.main.profile.ProfileScreen
+import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.ProfileViewModel
 import org.koin.compose.koinInject
 
 @Composable
-fun MainNav(context: Context, logout: () -> Unit) {
+fun MainNav(logout: () -> Unit) {
     val navBottomBarController = rememberNavController()
     val profileViewModel: ProfileViewModel = koinInject()
+
     Scaffold(bottomBar = {
         bottomBar(navBottomBarController)
     }) { innerPadding ->
@@ -32,7 +31,7 @@ fun MainNav(context: Context, logout: () -> Unit) {
                 modifier = Modifier.fillMaxSize()
             ) {
                 composable(route = BottomNavItem.Home.route) {
-                    HomeScreen(navBottomBarController, context)
+//                    HomeScreen(navBottomBarController, context)
                 }
                 composable(route = BottomNavItem.Deposits.route) {
 //                    WishlistNav()
@@ -49,6 +48,34 @@ fun MainNav(context: Context, logout: () -> Unit) {
                         onBackClick = { navBottomBarController.popBackStack() }
                     )
                 }
+
+                /* dialog("Alerts") {
+                    AlertDialog(title = {
+                        Text(
+                            text = "Alert",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.inversePrimary
+                        )
+                    }, text = {
+                        Text(
+                            text = "Are you sure want to logout?",
+                            style = MaterialTheme.typography.titleLarge,
+                            color = MaterialTheme.colorScheme.inversePrimary
+                        )
+                    }, onDismissRequest = {
+                        navController.navigateUp()
+                    }, confirmButton = {
+                        ElevatedButton(onClick = {
+                            navController.navigateUp()
+                        }) {
+                            Text(
+                                text = "Logout",
+                                style = MaterialTheme.typography.titleLarge,
+                                color = MaterialTheme.colorScheme.inversePrimary
+                            )
+                        }
+                    })
+                } */
             }
         }
 

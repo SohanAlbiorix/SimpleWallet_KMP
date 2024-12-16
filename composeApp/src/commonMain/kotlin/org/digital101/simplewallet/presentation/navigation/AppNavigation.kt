@@ -6,7 +6,7 @@ import kotlinx.serialization.Serializable
 sealed interface AppNavigation {
 
     @Serializable
-    data object Splash : AppNavigation
+    data object Auth : AppNavigation
 
     @Serializable
     data object Main : AppNavigation

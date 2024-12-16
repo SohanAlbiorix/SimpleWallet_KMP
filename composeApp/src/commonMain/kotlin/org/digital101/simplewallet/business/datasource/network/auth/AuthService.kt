@@ -15,6 +15,7 @@ interface AuthService {
     }
 
     suspend fun authorize(): MainGenericResponse<AuthorizeResponsesDTO?>
+
     suspend fun login(
         email: String,
         password: String,

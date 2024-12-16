@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.presentation.ui.dashboard.profile
+package org.digital101.simplewallet.presentation.ui.main.profile
 
 import CommonEditTextField
 import androidx.compose.foundation.layout.Column
@@ -19,8 +19,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.digital101.simplewallet.presentation.component.DefaultButton
 import org.digital101.simplewallet.presentation.component.DefaultScreenUI
-import org.digital101.simplewallet.presentation.ui.dashboard.profile.viewmodel.ProfileEvent
-import org.digital101.simplewallet.presentation.ui.dashboard.profile.viewmodel.ProfileViewModel
+import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.ProfileEvent
+import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.ProfileViewModel
 import org.jetbrains.compose.resources.stringResource
 import simplewallet.composeapp.generated.resources.Res
 import simplewallet.composeapp.generated.resources.label_address_line_1

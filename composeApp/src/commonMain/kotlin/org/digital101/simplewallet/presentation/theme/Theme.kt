@@ -16,7 +16,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 @Composable
-fun JetpackComposeDemoTheme(
+fun AppTheme(
     content: @Composable () -> Unit
 ) {
     ChangeStatusBarColors(LightColorScheme.primary)

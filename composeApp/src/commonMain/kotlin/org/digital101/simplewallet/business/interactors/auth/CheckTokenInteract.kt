@@ -9,7 +9,7 @@ import org.digital101.simplewallet.business.core.DataState
 import org.digital101.simplewallet.business.core.ProgressBarState
 import org.digital101.simplewallet.business.util.handleUseCaseException
 
-class CheckTokenInteractor(
+class CheckTokenInteract(
     private val appDataStoreManager: AppDataStore,
 ) {
     fun execute(): Flow<DataState<Boolean>> = flow {

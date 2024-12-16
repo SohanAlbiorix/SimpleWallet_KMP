@@ -1,42 +1,34 @@
 package org.digital101.simplewallet.di
 
+import kotlinx.serialization.json.Json
 import org.digital101.simplewallet.business.core.AppDataStore
 import org.digital101.simplewallet.business.core.AppDataStoreManager
 import org.digital101.simplewallet.business.core.KtorHttpClient
 import org.digital101.simplewallet.business.datasource.network.auth.AuthService
 import org.digital101.simplewallet.business.datasource.network.auth.AuthServiceImpl
-import org.digital101.simplewallet.business.interactors.auth.AuthInteractor
-import org.digital101.simplewallet.business.interactors.auth.CheckTokenInteractor
-import org.digital101.simplewallet.business.interactors.neobank.LogoutInteractor
+import org.digital101.simplewallet.business.interactors.auth.AuthInteract
+import org.digital101.simplewallet.business.interactors.auth.CheckTokenInteract
+import org.digital101.simplewallet.business.interactors.neobank.LogoutInteract
 import org.digital101.simplewallet.common.Context
 import org.digital101.simplewallet.presentation.SharedViewModel
-import org.digital101.simplewallet.presentation.navigation.NavigationGraphViewModel
-import org.digital101.simplewallet.presentation.token_manager.TokenManager
-import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginViewModel
-import org.digital101.simplewallet.presentation.ui.dashboard.profile.viewmodel.ProfileViewModel
-import org.koin.core.module.dsl.factoryOf
+import org.digital101.simplewallet.presentation.tokenManager.TokenManager
+import org.digital101.simplewallet.presentation.ui.auth.login.viewModel.LoginViewModel
+import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.ProfileViewModel
 import org.koin.dsl.module
 
 fun dataModule(context: Context) = module {
+    single { Json { isLenient = true; ignoreUnknownKeys = true } }
     single { KtorHttpClient.httpClient(get()) }
 
     single<AuthService> { AuthServiceImpl(get()) }
     single<AppDataStore> { AppDataStoreManager(context) }
-    single { AuthInteractor(get(), get()) }
-    single { CheckTokenInteractor(get()) }
-    single { LogoutInteractor(get()) }
-    single { TokenManager(get(), get()) }
-}
 
-val viewModelModule = module {
-    factoryOf(::NavigationGraphViewModel)
-    factory {
-        LoginViewModel(get())
-    }
-    factory {
-        SharedViewModel(get())
-    }
-    factory {
-        ProfileViewModel()
-    }
+    factory { SharedViewModel(get()) }
+    factory { LoginViewModel(get()) }
+    factory { ProfileViewModel() }
+
+    single { AuthInteract(get(), get()) }
+    single { CheckTokenInteract(get()) }
+    single { LogoutInteract(get()) }
+    single { TokenManager(get(), get()) }
 }

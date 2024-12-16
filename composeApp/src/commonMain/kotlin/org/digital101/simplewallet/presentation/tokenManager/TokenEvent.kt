@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.presentation.token_manager
+package org.digital101.simplewallet.presentation.tokenManager
 
 sealed class TokenEvent {
     data object CheckToken : TokenEvent()

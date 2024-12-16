@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.presentation.ui.dashboard.settings.model
+package org.digital101.simplewallet.presentation.ui.main.settings.model
 
 import org.jetbrains.compose.resources.DrawableResource
 

@@ -107,7 +107,7 @@ fun DefaultScreenUI(
         ) {
             content()
             // process the queue
-            /*if (!queue.isEmpty()) {
+            if (!queue.isEmpty()) {
                 queue.peek()?.let { uiComponent ->
                     if (uiComponent is UIComponent.Dialog) {
                         CreateUIComponentDialog(
@@ -125,7 +125,7 @@ fun DefaultScreenUI(
                         )
                     }
                 }
-            }*/
+            }
             if (networkState == NetworkState.Failed && progressBarState == ProgressBarState.Idle) {
                 FailedNetworkScreen(onTryAgain = onTryAgain)
             }

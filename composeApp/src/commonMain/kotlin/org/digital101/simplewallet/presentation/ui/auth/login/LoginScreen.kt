@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.presentation.ui.auth
+package org.digital101.simplewallet.presentation.ui.auth.login
 
 import CommonEditTextField
 import androidx.compose.foundation.Image
@@ -21,9 +21,9 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import org.digital101.simplewallet.presentation.component.DefaultButton
 import org.digital101.simplewallet.presentation.component.DefaultScreenUI
-import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginEvent
-import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginState
-import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginViewModel
+import org.digital101.simplewallet.presentation.ui.auth.login.viewModel.LoginEvent
+import org.digital101.simplewallet.presentation.ui.auth.login.viewModel.LoginState
+import org.digital101.simplewallet.presentation.ui.auth.login.viewModel.LoginViewModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import simplewallet.composeapp.generated.resources.Res
@@ -42,11 +42,8 @@ fun LoginScreen(
     events: (LoginEvent) -> Unit,
     navigateToMain: () -> Unit
 ) {
-
     LaunchedEffect(state.navigateToMain) {
-        if (state.navigateToMain) {
-            navigateToMain()
-        }
+        if (state.navigateToMain) navigateToMain()
     }
 
     val emailErrorMessage = viewModel.emailErrorMessage.collectAsState().value
@@ -54,7 +51,7 @@ fun LoginScreen(
 
     DefaultScreenUI(
         queue = state.errorQueue,
-//        onRemoveHeadFromQueue = { events(LoginEvent.OnRemoveHeadFromQueue) },
+        onRemoveHeadFromQueue = { events(LoginEvent.OnRemoveHeadFromQueue) },
         progressBarState = state.progressBarState,
     ) {
         Column(

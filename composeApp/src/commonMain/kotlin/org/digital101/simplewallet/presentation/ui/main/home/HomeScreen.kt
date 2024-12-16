@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.presentation.ui.dashboard.home
+package org.digital101.simplewallet.presentation.ui.main.home
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -32,7 +32,7 @@ import kotlinx.coroutines.launch
 import org.digital101.simplewallet.common.Context
 import org.digital101.simplewallet.presentation.component.DefaultScreenUI
 import org.digital101.simplewallet.presentation.theme.BaseColors
-import org.digital101.simplewallet.presentation.ui.dashboard.settings.AccountSettings
+import org.digital101.simplewallet.presentation.ui.main.settings.AccountSettings
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import simplewallet.composeapp.generated.resources.Res

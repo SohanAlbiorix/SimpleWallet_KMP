@@ -7,29 +7,18 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import org.digital101.simplewallet.presentation.navigation.AuthNavigation
-import org.digital101.simplewallet.presentation.ui.auth.viewmodel.LoginViewModel
+import org.digital101.simplewallet.presentation.ui.auth.login.LoginScreen
+import org.digital101.simplewallet.presentation.ui.auth.login.viewModel.LoginViewModel
 import org.koin.compose.koinInject
 
 @Composable
 internal fun AuthNav(viewModel: LoginViewModel = koinInject(), navigateToMain: () -> Unit) {
-
     val navigator = rememberNavController()
     NavHost(
-        startDestination = AuthNavigation.Splash,
+        startDestination = AuthNavigation.Login,
+        modifier = Modifier.fillMaxSize(),
         navController = navigator,
-        modifier = Modifier.fillMaxSize()
     ) {
-        composable<AuthNavigation.Splash> {
-            SplashScreen(
-                state = viewModel.state.value,
-                navigateToMain = navigateToMain,
-                navigateToLogin = {
-                    navigator.popBackStack()
-                    navigator.navigate(AuthNavigation.Login)
-                },
-                events = viewModel::onTriggerEvent,
-            )
-        }
         composable<AuthNavigation.Login> {
             LoginScreen(
                 viewModel,
@@ -39,5 +28,4 @@ internal fun AuthNav(viewModel: LoginViewModel = koinInject(), navigateToMain: (
             )
         }
     }
-
 }

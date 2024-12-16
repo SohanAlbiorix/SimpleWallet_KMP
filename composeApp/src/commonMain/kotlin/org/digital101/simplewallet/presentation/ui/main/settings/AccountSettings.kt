@@ -1,4 +1,4 @@
-package org.digital101.simplewallet.presentation.ui.dashboard.settings
+package org.digital101.simplewallet.presentation.ui.main.settings
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -35,7 +35,7 @@ import androidx.navigation.NavHostController
 import org.digital101.simplewallet.common.Context
 import org.digital101.simplewallet.common.getPlatform
 import org.digital101.simplewallet.presentation.navigation.MainNavigation
-import org.digital101.simplewallet.presentation.ui.dashboard.settings.model.ProfileModel
+import org.digital101.simplewallet.presentation.ui.main.settings.model.ProfileModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import simplewallet.composeapp.generated.resources.Res
