@@ -136,9 +136,11 @@ class ProfileViewModel(
                 }
 
                 is DataState.Data -> {
-                    // TODO :: Bind your data here
                     state.value = state.value.copy(
                         preferredUsername = dataState.data?.userName ?: "",
+                        religion = dataState.data?.religion ?: "",
+                        maritalStatus = dataState.data?.maritalStatus ?: "",
+
                     )
                 }
 

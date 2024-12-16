@@ -28,15 +28,17 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import org.digital101.simplewallet.presentation.component.DefaultScreenUI
 import org.digital101.simplewallet.presentation.theme.BaseColors
 import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.ProfileViewModel
-import org.digital101.simplewallet.presentation.ui.main.settings.AccountSettings
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import simplewallet.composeapp.generated.resources.Res
+import simplewallet.composeapp.generated.resources.app_logo
 import simplewallet.composeapp.generated.resources.arrow_right
+import simplewallet.composeapp.generated.resources.bill
 import simplewallet.composeapp.generated.resources.icon
 import simplewallet.composeapp.generated.resources.label_activate_your_virtual_card_now
 import simplewallet.composeapp.generated.resources.profile
@@ -88,14 +90,96 @@ fun HomeScreen(
                     )
                 }
             }
-
-            AtmCard()
+            CreditCardView()
+            /*AtmCard()*/
                 transferList()
                 LoanCardList()
         }
     }
 }
 
+
+@Composable
+fun CreditCardView(
+    cardholderName: String = "JOHN DOE",
+    cardType: String = "Total Balance",
+    bankName: String = "My Bank",
+    totalBalance: String = "$5,432.15"
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(240.dp)
+            .padding(top = 16.dp, bottom = 16.dp)
+            .background(
+                color = Color(0xFF2C3E50), // Card background color
+                shape = androidx.compose.foundation.shape.RoundedCornerShape(16.dp)
+            )
+
+    ) {
+        Column(
+            modifier = Modifier
+                .padding(16.dp)
+                .fillMaxSize()
+        ) {
+            // Bank Logo and Name
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                // Bank Logo (Use your image resource here)
+                Image(
+                    painter = painterResource(Res.drawable.app_logo),
+                    contentDescription = "Bank Logo",
+                    modifier = Modifier
+                        .size(40.dp)
+                        .align(Alignment.CenterVertically)
+                )
+                // Bank Name
+                Text(
+                    text = bankName,
+                    color = Color.White,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+            // Card Type (VISA, MasterCard, etc.)
+            Text(
+                text = cardType,
+                color = Color.White,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+            Spacer(modifier = Modifier.height(12.dp))
+            // Card Number
+
+            Spacer(modifier = Modifier.height(12.dp))
+            // Expiry Date and Cardholder Name
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+
+                // Cardholder Name
+                Text(
+                    text = cardholderName,
+                    color = Color.White,
+                    fontSize = 14.sp
+                )
+            }
+            Spacer(modifier = Modifier.height(16.dp))
+            // Total Balance
+            Text(
+                text = "Balance: $totalBalance",
+                color = Color.White,
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        }
+    }
+}
 @Composable
 fun AtmCard() {
     LazyRow(
@@ -104,22 +188,38 @@ fun AtmCard() {
             .padding(top = 16.dp, bottom = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        items(2) { index ->  // Specify the number of cards
+        items(2) { index ->
             Box(
                 modifier = Modifier
                     .height(200.dp)
-                    .width(350.dp).clip(RoundedCornerShape(16.dp))// Fixed height
+                    .width(350.dp)
+                    .clip(RoundedCornerShape(16.dp))
                     .background(Color.Gray)
             ) {
+                // Row to contain the image on the left and text at the center
+                Row(
+                    modifier = Modifier
+                        .padding(16.dp)
+                        .align(Alignment.TopStart), // Aligning to the top left of the card
+                    verticalAlignment = Alignment.Top
+                ) {
+                    /*Image(
+                        painter = painterResource(),
+                        contentDescription = "ATM Card Image",
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(8.dp))
+                    )*/
+                }
                 Text(
                     text = "ATM Card ${index + 1}",
                     color = Color.White,
-                    modifier = Modifier.align(Alignment.Center)
+                    modifier = Modifier.align(Alignment.Center) // Text will be centered
                 )
             }
         }
     }
 }
+
 
 @Composable
 fun transferList() {
@@ -134,21 +234,23 @@ fun transferList() {
                     .height(100.dp)
                     .width(100.dp)
                     .clip(RoundedCornerShape(8.dp))
-                    .background(Color.Gray)
+                    .background(Color.White)
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
                     modifier = Modifier.fillMaxSize()
                 ) {
-                    Text(
-                        text = "ATM Card ${index + 1}",
-                        color = Color.White,
+
+                    Image(
+                        painter = painterResource(Res.drawable.bill),
+                        contentDescription = "Bank Logo",
+                        modifier = Modifier
                     )
                     Spacer(modifier = Modifier.height(8.dp))
                     Text(
                         text = "${index + 1}",
-                        color = Color.White,
+                        color = Color.Black,
                     )
                 }
             }
