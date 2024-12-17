@@ -63,7 +63,6 @@ internal fun App(context: Context) {
                         }
                         composable<AppNavigation.Main> {
                             MainNav(
-                                profileViewModel = koinInject(),
                                 logout = {
                                     viewModel.tokenManager.onTriggerEvent(TokenEvent.Logout)
                                     navigator.navigate(AppNavigation.Auth)
@@ -73,9 +72,7 @@ internal fun App(context: Context) {
                         }
 
                         composable<AppNavigation.Profile> {
-                            ProfileScreen(
-                                viewModel = koinInject(),
-                            ) {
+                            ProfileScreen {
                                 navigator.popBackStack()
                             }
                         }

@@ -33,10 +33,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import org.digital101.simplewallet.presentation.component.DefaultScreenUI
 import org.digital101.simplewallet.presentation.theme.BaseColors
-import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.ProfileViewModel
+import org.digital101.simplewallet.presentation.ui.main.home.viewModel.HomeViewModel
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import simplewallet.composeapp.generated.resources.Res
 import simplewallet.composeapp.generated.resources.app_logo
 import simplewallet.composeapp.generated.resources.arrow_right
@@ -47,13 +48,16 @@ import simplewallet.composeapp.generated.resources.profile
 
 @Composable
 fun HomeScreen(
-    profileViewModel: ProfileViewModel,
+    viewModel: HomeViewModel = koinInject(),
     onHamburgerClick: () -> Unit,
 ) {
     DefaultScreenUI(
         isHamburgerMenu = true,
         onHamburgerClick = onHamburgerClick,
-        userName = profileViewModel.state.value.preferredUsername,
+        userName = viewModel.state.value.data?.userName,
+        progressBarState = viewModel.state.value.progressBarState,
+        networkState = viewModel.state.value.networkState,
+        queue = viewModel.state.value.errorQueue,
     ) {
         Column(
             modifier = Modifier
@@ -93,11 +97,13 @@ fun HomeScreen(
                 }
             }
 
-            CreditCardView()
+            CreditCardView(
+                totalBalance = (viewModel.state.value.wallet?.availableBalance ?: 0).toString()
+            )
 
-            /*AtmCard()*/
+            /* AtmCard() */
 
-            transferList()
+            /* transferList() */
 
             LoanCardList()
         }

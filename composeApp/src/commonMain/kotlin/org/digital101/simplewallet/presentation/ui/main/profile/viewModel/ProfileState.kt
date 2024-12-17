@@ -22,8 +22,8 @@ data class ProfileState(
     val annualIncome: String = "",
 
     val data: UserDataDTO? = null,
-
     val isDialogVisible: Boolean = false,
+
     val progressBarState: ProgressBarState = ProgressBarState.Idle,
     val networkState: NetworkState = NetworkState.Good,
     val errorQueue: Queue<UIComponent> = Queue(mutableListOf()),

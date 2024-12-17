@@ -11,6 +11,7 @@ import kotlinx.coroutines.launch
 import org.digital101.simplewallet.business.core.DataState
 import org.digital101.simplewallet.business.interactors.neobank.UpdateProfileInteract
 import org.digital101.simplewallet.business.interactors.neobank.UserInteract
+import org.digital101.simplewallet.business.interactors.neobank.WalletInteract
 import org.digital101.simplewallet.business.network.neo.responses.Address
 import org.digital101.simplewallet.business.network.neo.responses.EmploymentDetail
 import org.digital101.simplewallet.business.util.isAddress1

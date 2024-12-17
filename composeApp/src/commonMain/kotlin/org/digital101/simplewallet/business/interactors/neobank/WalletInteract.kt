@@ -9,29 +9,24 @@ import org.digital101.simplewallet.business.core.NetworkState
 import org.digital101.simplewallet.business.core.ProgressBarState
 import org.digital101.simplewallet.business.core.UIComponent
 import org.digital101.simplewallet.business.network.neo.NeoService
-import org.digital101.simplewallet.business.network.neo.responses.UserDataDTO
+import org.digital101.simplewallet.business.network.neo.responses.WalletResponseDTO
 import org.digital101.simplewallet.business.util.handleUseCaseException
 
-class UpdateProfileInteract(
+class WalletInteract(
     private val service: NeoService,
-    private val appDataStoreManager: AppDataStore,
+    private val dataStore: AppDataStore,
 ) {
-    fun execute(data: UserDataDTO): Flow<DataState<UserDataDTO>> = flow {
+    fun execute(): Flow<DataState<WalletResponseDTO>> = flow {
         try {
             emit(DataState.Loading(progressBarState = ProgressBarState.FullScreenLoading))
-            val token = appDataStoreManager.readValue(DataStoreKeys.TOKEN) ?: ""
+            val token = dataStore.readValue(DataStoreKeys.TOKEN) ?: ""
+            val response = service.wallet(token)
+            response.message?.let {
+                emit(DataState.Response(uiComponent = UIComponent.None(it)))
+            }
 
-            if (data.userId != null) {
-                val response = service.updateUser(token, userId = data.userId, data = data)
-
-                response.message?.let {
-                    emit(DataState.Response(uiComponent = UIComponent.None(it)))
-                }
-
-                val result = response.result
-                if (result != null) {
-                    emit(DataState.Data(result, status = response.status))
-                }
+            if (!response.data.isNullOrEmpty()) {
+                emit(DataState.Data(response.data.first()))
             }
         } catch (e: Exception) {
             emit(DataState.NetworkStatus(NetworkState.Failed))

@@ -38,7 +38,6 @@ import org.koin.compose.koinInject
 
 @Composable
 fun MainNav(
-    profileViewModel: ProfileViewModel,
     logout: () -> Unit,
     navigateToProfile: () -> Unit,
 ) {
@@ -67,9 +66,7 @@ fun MainNav(
                     modifier = Modifier.fillMaxSize()
                 ) {
                     composable(route = BottomNavItem.Home.route) {
-                        HomeScreen(
-                            profileViewModel = profileViewModel,
-                        ) {
+                        HomeScreen {
                             if (drawerState.isClosed) {
                                 coroutineScope.launch {
                                     drawerState.open()

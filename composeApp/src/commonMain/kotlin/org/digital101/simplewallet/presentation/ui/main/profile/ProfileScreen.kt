@@ -38,6 +38,7 @@ import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.Profil
 import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.ProfileViewModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
+import org.koin.compose.koinInject
 import simplewallet.composeapp.generated.resources.Res
 import simplewallet.composeapp.generated.resources.doneimage
 import simplewallet.composeapp.generated.resources.label_address_line_1
@@ -62,7 +63,7 @@ import simplewallet.composeapp.generated.resources.label_update
 
 @Composable
 fun ProfileScreen(
-    viewModel: ProfileViewModel,
+    viewModel: ProfileViewModel = koinInject(),
     onBackClick: () -> Unit,
 ) {
     val state = viewModel.state.value
@@ -90,6 +91,9 @@ fun ProfileScreen(
             onClick = onBackClick,
             description = "Back",
         ),
+        progressBarState = state.progressBarState,
+        networkState = state.networkState,
+        queue = state.errorQueue,
     ) {
         Column(
             modifier = Modifier

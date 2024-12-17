@@ -13,9 +13,12 @@ import io.ktor.http.encodedPath
 import io.ktor.http.takeFrom
 import org.digital101.simplewallet.business.constants.NEO_BANK_BASE_URL
 import org.digital101.simplewallet.business.network.common.MainGenericResponse
+import org.digital101.simplewallet.business.network.common.PaginatedGenericResponse
 import org.digital101.simplewallet.business.network.neo.NeoService.Companion.ME
 import org.digital101.simplewallet.business.network.neo.NeoService.Companion.MEMBERSHIP
+import org.digital101.simplewallet.business.network.neo.NeoService.Companion.WALLET
 import org.digital101.simplewallet.business.network.neo.responses.UserDataDTO
+import org.digital101.simplewallet.business.network.neo.responses.WalletResponseDTO
 
 class NeoServiceImpl(
     private val httpClient: HttpClient
@@ -47,6 +50,19 @@ class NeoServiceImpl(
             }
             contentType(ContentType.Application.Json)
             setBody(data)
+        }.body()
+    }
+
+    override suspend fun wallet(token: String): PaginatedGenericResponse<WalletResponseDTO> {
+        return httpClient.get {
+            url {
+                headers {
+                    append(HttpHeaders.Authorization, token)
+                }
+                takeFrom(NEO_BANK_BASE_URL)
+                encodedPath += WALLET
+            }
+            contentType(ContentType.Application.Json)
         }.body()
     }
 }

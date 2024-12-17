@@ -1,18 +1,18 @@
 package org.digital101.simplewallet.business.network.common
 
-import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
-data class MainGenericResponse<T>(
-    @SerialName("data") var result: T?,
+data class PaginatedGenericResponse<T>(
+    val data: List<T>?,
+    val paging: Paging?,
     val status: Status?,
     val message: String?,
 )
 
 @Serializable
-data class Status(
-    val code: String?,
-    val message: String?,
+data class Paging(
+    val totalRecords: Int?,
+    val pageSize: Int?,
+    val pageNumber: Int?,
 )

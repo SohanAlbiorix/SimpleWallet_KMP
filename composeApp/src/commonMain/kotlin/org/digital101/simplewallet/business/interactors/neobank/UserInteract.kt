@@ -23,7 +23,7 @@ class UserInteract(
             val token = appDataStoreManager.readValue(DataStoreKeys.TOKEN) ?: ""
             val response = service.user(token)
 
-            response.alert?.let {
+            response.message?.let {
                 emit(DataState.Response(uiComponent = UIComponent.None(it)))
             }
 
