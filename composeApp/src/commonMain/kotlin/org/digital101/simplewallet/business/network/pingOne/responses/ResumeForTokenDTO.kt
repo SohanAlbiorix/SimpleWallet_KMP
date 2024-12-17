@@ -5,10 +5,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class ResumeForTokenDTO(
-    @SerialName("_links")
-    val links: ResumeForTokenLinks,
-    @SerialName("_embedded")
-    val embedded: ResumeForTokenEmbedded,
+    @SerialName("_links") val links: Links,
+    @SerialName("_embedded") val embedded: Embedded,
     val id: String,
     val environment: Environment,
     val session: Session,
@@ -17,18 +15,6 @@ data class ResumeForTokenDTO(
     val createdAt: String,
     val expiresAt: String,
     val authorizeResponse: AuthorizeResponse
-)
-
-@Serializable
-data class ResumeForTokenLinks(
-    val self: Self,
-    val signOnPage: SignOnPage
-)
-
-@Serializable
-data class ResumeForTokenEmbedded(
-    val user: User,
-    val application: Application
 )
 
 @Serializable

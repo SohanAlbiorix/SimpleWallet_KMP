@@ -23,10 +23,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -42,7 +38,6 @@ import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.Profil
 import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.ProfileViewModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
-import org.koin.compose.koinInject
 import simplewallet.composeapp.generated.resources.Res
 import simplewallet.composeapp.generated.resources.doneimage
 import simplewallet.composeapp.generated.resources.label_address_line_1
@@ -87,8 +82,6 @@ fun ProfileScreen(
     val employeeNameErrorMessage = viewModel.nameOfEmployeeErrorMessage.collectAsState().value
     val employeeOccupationErrorMessage = viewModel.occupationErrorMessage.collectAsState().value
     val employeeAnnualIncomeErrorMessage = viewModel.annualIncomeErrorMessage.collectAsState().value
-
-    var isDialogVisible by remember { mutableStateOf(false) }
 
     // State to toggle dialog visibility
     DefaultScreenUI(
@@ -335,16 +328,14 @@ fun ProfileScreen(
                 shape = RoundedCornerShape(8.dp),
                 modifier = Modifier.fillMaxWidth(),
                 onClick = {
-                    isDialogVisible = true
-                    if (!(preferredErrorMessage.isEmpty() && religionErrorMessage.isEmpty() &&
-                                maritalStatusErrorMessage.isEmpty() && addressLine1ErrorMessage.isEmpty() &&
-                                addressLine2ErrorMessage.isEmpty() && postCodeErrorMessage.isEmpty() &&
-                                cityErrorMessage.isEmpty() && stateErrorMessage.isEmpty() &&
-                                employeeOccupationErrorMessage.isEmpty() && employeeIndustryErrorMessage.isEmpty() &&
-                                employeeNameErrorMessage.isEmpty() && employeeOccupationErrorMessage.isEmpty() &&
-                                employeeAnnualIncomeErrorMessage.isEmpty())
+                    if (preferredErrorMessage.isEmpty() && religionErrorMessage.isEmpty() &&
+                        maritalStatusErrorMessage.isEmpty() && addressLine1ErrorMessage.isEmpty() &&
+                        addressLine2ErrorMessage.isEmpty() && postCodeErrorMessage.isEmpty() &&
+                        cityErrorMessage.isEmpty() && stateErrorMessage.isEmpty() &&
+                        employeeOccupationErrorMessage.isEmpty() && employeeIndustryErrorMessage.isEmpty() &&
+                        employeeNameErrorMessage.isEmpty() && employeeOccupationErrorMessage.isEmpty() &&
+                        employeeAnnualIncomeErrorMessage.isEmpty()
                     ) {
-
                         events(ProfileEvent.UpdateDate)
                     }
                 },
@@ -352,12 +343,11 @@ fun ProfileScreen(
             )
         }
     }
-    if (isDialogVisible) {
-        ProfileUpdateSuccessDialog(
-            onDoneClick = {
-                isDialogVisible = false
-            }
-        )
+    if (state.isDialogVisible) {
+        ProfileUpdateSuccessDialog(onDoneClick = {
+            viewModel.dismissPopup()
+            onBackClick()
+        })
     }
 }
 

@@ -1,8 +1,7 @@
 package org.digital101.simplewallet.business.network.neo
 
 import org.digital101.simplewallet.business.network.common.MainGenericResponse
-import org.digital101.simplewallet.business.network.neo.responses.UserData
-import org.digital101.simplewallet.business.network.neo.responses.UserResponseDTO
+import org.digital101.simplewallet.business.network.neo.responses.UserDataDTO
 
 interface NeoService {
     companion object {
@@ -10,11 +9,11 @@ interface NeoService {
         const val ME = "$MEMBERSHIP/me"
     }
 
-    suspend fun user(token: String): MainGenericResponse<UserResponseDTO?>
+    suspend fun user(token: String): MainGenericResponse<UserDataDTO?>
 
     suspend fun updateUser(
         token: String,
         userId: String,
-        data: UserData
-    ): MainGenericResponse<UserResponseDTO?>
+        data: UserDataDTO,
+    ): MainGenericResponse<UserDataDTO?>
 }

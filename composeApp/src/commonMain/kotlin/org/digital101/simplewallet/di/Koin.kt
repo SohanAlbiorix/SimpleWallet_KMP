@@ -7,6 +7,7 @@ import org.digital101.simplewallet.business.core.KtorHttpClient
 import org.digital101.simplewallet.business.interactors.auth.AuthInteract
 import org.digital101.simplewallet.business.interactors.auth.CheckTokenInteract
 import org.digital101.simplewallet.business.interactors.auth.LogoutInteract
+import org.digital101.simplewallet.business.interactors.neobank.UpdateProfileInteract
 import org.digital101.simplewallet.business.interactors.neobank.UserInteract
 import org.digital101.simplewallet.business.network.neo.NeoService
 import org.digital101.simplewallet.business.network.neo.NeoServiceImpl
@@ -26,15 +27,16 @@ fun dataModule(context: Context) = module {
     single<PingOneService> { PingOneServiceImpl(get()) }
     single<NeoService> { NeoServiceImpl(get()) }
 
-    single<AppDataStore> { AppDataStoreManager(context) }
-    single { TokenManager(get(), get()) }
-
     factory { SharedViewModel(get()) }
     factory { LoginViewModel(get()) }
-    factory { ProfileViewModel(get()) }
+    factory { ProfileViewModel(get(), get()) }
 
     single { AuthInteract(get(), get()) }
     single { CheckTokenInteract(get()) }
     single { LogoutInteract(get()) }
     single { UserInteract(get(), get()) }
+    single { UpdateProfileInteract(get(), get()) }
+
+    single<AppDataStore> { AppDataStoreManager(context) }
+    single { TokenManager(get(), get()) }
 }

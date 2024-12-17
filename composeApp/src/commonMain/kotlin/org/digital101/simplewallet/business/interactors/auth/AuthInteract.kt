@@ -5,6 +5,7 @@ import kotlinx.coroutines.flow.flow
 import org.digital101.simplewallet.business.constants.DataStoreKeys
 import org.digital101.simplewallet.business.core.AppDataStore
 import org.digital101.simplewallet.business.core.DataState
+import org.digital101.simplewallet.business.core.NetworkState
 import org.digital101.simplewallet.business.core.ProgressBarState
 import org.digital101.simplewallet.business.network.pingOne.PingOneService
 import org.digital101.simplewallet.business.util.handleUseCaseException
@@ -21,28 +22,25 @@ class AuthInteract(
         try {
             emit(DataState.Loading(progressBarState = ProgressBarState.FullScreenLoading))
             val authResponse = service.authorize()
-            val authResult = authResponse.result
-            if (authResult != null) {
-                val loginResponse = service.login(email, password, authResult.id)
-                val loginResult = loginResponse.result
-                if (loginResult != null) {
-                    val resumeResponse = service.resumeForToken(authResult.id)
-                    val resumeResult = resumeResponse.result
-                    if (resumeResult != null) {
-                        val tokenResponse = service.obtainToken(resumeResult.authorizeResponse.code)
-                        val tokenResult = tokenResponse.result
-                        if (tokenResult != null) {
+            if (authResponse?.id != null) {
+                val loginResponse = service.login(email, password, authResponse.id)
+                if (loginResponse != null) {
+                    val resumeResponse = service.resumeForToken(authResponse.id)
+                    if (resumeResponse != null) {
+                        val tokenResponse =
+                            service.obtainToken(resumeResponse.authorizeResponse.code)
+                        if (tokenResponse != null) {
                             appDataStoreManager.setValue(
                                 DataStoreKeys.TOKEN,
-                                "${tokenResult.tokenType} ${tokenResult.accessToken}"
+                                "${tokenResponse.tokenType} ${tokenResponse.accessToken}"
                             )
-                            emit(DataState.Data(status = tokenResponse.status))
+                            emit(DataState.Data(tokenResponse.tokenType))
                         }
                     }
                 }
             }
         } catch (e: Exception) {
-            e.printStackTrace()
+            emit(DataState.NetworkStatus(NetworkState.Failed))
             emit(handleUseCaseException(e))
         } finally {
             emit(DataState.Loading(progressBarState = ProgressBarState.Idle))

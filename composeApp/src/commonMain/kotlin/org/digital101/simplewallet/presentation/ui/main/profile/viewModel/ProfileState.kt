@@ -4,6 +4,7 @@ import org.digital101.simplewallet.business.core.NetworkState
 import org.digital101.simplewallet.business.core.ProgressBarState
 import org.digital101.simplewallet.business.core.Queue
 import org.digital101.simplewallet.business.core.UIComponent
+import org.digital101.simplewallet.business.network.neo.responses.UserDataDTO
 
 data class ProfileState(
     val preferredUsername: String = "",
@@ -20,6 +21,9 @@ data class ProfileState(
     val occupation: String = "",
     val annualIncome: String = "",
 
+    val data: UserDataDTO? = null,
+
+    val isDialogVisible: Boolean = false,
     val progressBarState: ProgressBarState = ProgressBarState.Idle,
     val networkState: NetworkState = NetworkState.Good,
     val errorQueue: Queue<UIComponent> = Queue(mutableListOf()),

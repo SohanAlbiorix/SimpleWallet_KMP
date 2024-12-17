@@ -11,11 +11,11 @@ fun <T> handleUseCaseException(e: Exception): DataState<T> {
 
 
     if (splitList.size <= 1) {
-        /*  return  DataState.Response<T>(
-              uiComponent = UIComponent.Dialog(
-                  alert = JAlertResponse(FAILED_NETWORK_TITLE, FAILED_NETWORK)
-              )
-          )*/
+        /* return  DataState.Response<T>(
+            uiComponent = UIComponent.Dialog(
+                alert = JAlertResponse(FAILED_NETWORK_TITLE, FAILED_NETWORK)
+            )
+        ) */
         return DataState.Response(
             uiComponent = UIComponent.None("")
         )

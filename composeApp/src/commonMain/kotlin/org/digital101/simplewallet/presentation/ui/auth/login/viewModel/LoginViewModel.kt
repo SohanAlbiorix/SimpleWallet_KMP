@@ -78,7 +78,7 @@ class LoginViewModel(
 
                 is DataState.Data -> {
                     state.value = state.value.copy(
-                        navigateToMain = dataState.status ?: false
+                        navigateToMain = dataState.data != null
                     )
                 }
 

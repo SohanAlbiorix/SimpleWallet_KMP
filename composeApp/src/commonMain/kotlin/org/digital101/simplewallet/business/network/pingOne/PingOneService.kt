@@ -14,15 +14,15 @@ interface PingOneService {
         const val OBTAIN_TOKEN = "as/token"
     }
 
-    suspend fun authorize(): MainGenericResponse<AuthorizeResponsesDTO?>
+    suspend fun authorize(): AuthorizeResponsesDTO?
 
     suspend fun login(
         email: String,
         password: String,
         flowId: String
-    ): MainGenericResponse<LoginResponsesDTO?>
+    ): LoginResponsesDTO?
 
-    suspend fun resumeForToken(flowId: String): MainGenericResponse<ResumeForTokenDTO?>
+    suspend fun resumeForToken(flowId: String): ResumeForTokenDTO?
 
-    suspend fun obtainToken(code: String): MainGenericResponse<ObtainTokenResponseDTO?>
+    suspend fun obtainToken(code: String): ObtainTokenResponseDTO?
 }

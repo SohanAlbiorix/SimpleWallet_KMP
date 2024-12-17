@@ -18,14 +18,13 @@ import org.digital101.simplewallet.business.network.pingOne.responses.AuthorizeR
 import org.digital101.simplewallet.business.network.pingOne.responses.LoginResponsesDTO
 import org.digital101.simplewallet.business.network.pingOne.responses.ObtainTokenResponseDTO
 import org.digital101.simplewallet.business.network.pingOne.responses.ResumeForTokenDTO
-import org.digital101.simplewallet.business.network.common.MainGenericResponse
 
 class PingOneServiceImpl(
     private val httpClient: HttpClient
 ) : PingOneService {
 
-    override suspend fun authorize(): MainGenericResponse<AuthorizeResponsesDTO?> {
-        val response = httpClient.get {
+    override suspend fun authorize(): AuthorizeResponsesDTO? {
+        return httpClient.get {
             url {
                 takeFrom(PING_ONE_BASE_URL)
                 encodedPath += "${API_KEY}/${PingOneService.AUTHORIZE}"
@@ -41,19 +40,15 @@ class PingOneServiceImpl(
                 parameters.append("response_type", "code")
             }
             contentType(ContentType.Application.Json)
-        }
-        return MainGenericResponse(
-            result = response.body(),
-            status = true
-        )
+        }.body()
     }
 
     override suspend fun login(
         email: String,
         password: String,
         flowId: String
-    ): MainGenericResponse<LoginResponsesDTO?> {
-        val response = httpClient.post {
+    ): LoginResponsesDTO? {
+        return httpClient.post {
             url {
                 takeFrom(PING_ONE_BASE_URL)
                 encodedPath += "${API_KEY}/${PingOneService.LOGIN}/$flowId"
@@ -65,51 +60,40 @@ class PingOneServiceImpl(
                 )
             )
             setBody(LoginRequestDTO(email = email, password = password))
-        }
-        return MainGenericResponse(
-            result = response.body(),
-            status = true
-        )
+        }.body()
     }
 
-    override suspend fun resumeForToken(flowId: String): MainGenericResponse<ResumeForTokenDTO?> {
-        val response = httpClient.get {
+    override suspend fun resumeForToken(flowId: String): ResumeForTokenDTO? {
+        return httpClient.get {
             url {
                 takeFrom(PING_ONE_BASE_URL)
                 encodedPath += "${API_KEY}/${PingOneService.RESUME_FOR_TOKEN}"
                 parameters.append("flowId", flowId)
             }
-        }
-        return MainGenericResponse(
-            result = response.body(),
-            status = true
-        )
+        }.body()
     }
 
-    override suspend fun obtainToken(code: String): MainGenericResponse<ObtainTokenResponseDTO?> {
-        return MainGenericResponse(
-            result = httpClient.post {
-                url {
-                    takeFrom(PING_ONE_BASE_URL)
-                    encodedPath += "${API_KEY}/${PingOneService.OBTAIN_TOKEN}"
-                }
-                contentType(ContentType.Application.Json)
-                setBody(
-                    FormDataContent(
-                        Parameters.build {
-                            append("scope", "openid profilepsf")
-                            append(
-                                "code_verifier",
-                                "DC0m3unbBdWUn5cDTc5j22DixyQHgdrDJQAYBEwwtR2ybYMv04jf0E0feQ"
-                            )
-                            append("client_id", "80a1653d-b5e4-475a-9fe0-f287d81d8e49")
-                            append("grant_type", "authorization_code")
-                            append("code", code)
-                        }
-                    )
+    override suspend fun obtainToken(code: String): ObtainTokenResponseDTO? {
+        return httpClient.post {
+            url {
+                takeFrom(PING_ONE_BASE_URL)
+                encodedPath += "${API_KEY}/${PingOneService.OBTAIN_TOKEN}"
+            }
+            contentType(ContentType.Application.Json)
+            setBody(
+                FormDataContent(
+                    Parameters.build {
+                        append("scope", "openid profilepsf")
+                        append(
+                            "code_verifier",
+                            "DC0m3unbBdWUn5cDTc5j22DixyQHgdrDJQAYBEwwtR2ybYMv04jf0E0feQ"
+                        )
+                        append("client_id", "80a1653d-b5e4-475a-9fe0-f287d81d8e49")
+                        append("grant_type", "authorization_code")
+                        append("code", code)
+                    }
                 )
-            }.body(),
-            status = true
-        )
+            )
+        }.body()
     }
 }

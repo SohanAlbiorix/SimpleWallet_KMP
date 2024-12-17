@@ -9,7 +9,10 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.digital101.simplewallet.business.core.DataState
+import org.digital101.simplewallet.business.interactors.neobank.UpdateProfileInteract
 import org.digital101.simplewallet.business.interactors.neobank.UserInteract
+import org.digital101.simplewallet.business.network.neo.responses.Address
+import org.digital101.simplewallet.business.network.neo.responses.EmploymentDetail
 import org.digital101.simplewallet.business.util.isAddress1
 import org.digital101.simplewallet.business.util.isAddress2
 import org.digital101.simplewallet.business.util.isAnnualIncome
@@ -41,7 +44,8 @@ import simplewallet.composeapp.generated.resources.validation_please_enter_state
 
 
 class ProfileViewModel(
-    val userInteract: UserInteract,
+    private val userInteract: UserInteract,
+    private val updateProfileInteract: UpdateProfileInteract,
 ) : ViewModel() {
     val state: MutableState<ProfileState> = mutableStateOf(ProfileState())
 
@@ -118,13 +122,86 @@ class ProfileViewModel(
             }
 
             ProfileEvent.UpdateDate -> {
-
+                updateProfile()
             }
         }
     }
 
     init {
         loadProfile()
+    }
+
+    private fun updateProfile() {
+        val data = state.value.data
+        if (data != null) {
+            val updatedAddress = mutableListOf<Address>()
+            val address = data.addresses
+            if (!address.isNullOrEmpty()) {
+                address.forEach {
+                    if (it.addressType == "Mailing Address") {
+                        updatedAddress.add(
+                            it.copy(
+                                line1 = state.value.addressLine1,
+                                line2 = state.value.addressLine2,
+                                postcode = state.value.postCode,
+                                city = state.value.city,
+                                state = state.value.addressState,
+                            )
+                        )
+                    } else {
+                        updatedAddress.add(it)
+                    }
+                }
+            }
+
+            val updatedEmploymentDetail = mutableListOf<EmploymentDetail>()
+            val employmentDetail = data.employmentDetails
+            if (!employmentDetail.isNullOrEmpty()) {
+                updatedEmploymentDetail.add(
+                    employmentDetail.first().copy(
+                        employmentType = state.value.employmentTypeState,
+                        sector = state.value.employmentIndustry,
+                        occupation = state.value.occupation,
+                        companyName = state.value.nameOfEmployee,
+                    )
+                )
+            }
+
+            updateProfileInteract.execute(
+                data = data.copy(
+                    userName = state.value.preferredUsername,
+                    religion = state.value.religion,
+                    maritalStatus = state.value.maritalStatus,
+                    addresses = updatedAddress,
+                    employmentDetails = updatedEmploymentDetail,
+                )
+            ).onEach { dataState ->
+                when (dataState) {
+                    is DataState.NetworkStatus -> {}
+                    is DataState.Response -> {
+                        onTriggerEvent(ProfileEvent.Error(dataState.uiComponent))
+                    }
+
+                    is DataState.Data -> {
+                        state.value = state.value.copy(isDialogVisible = true)
+                    }
+
+                    is DataState.Loading -> {
+                        state.value = state.value.copy(
+                            progressBarState = dataState.progressBarState,
+                        )
+                    }
+                }
+            }.launchIn(viewModelScope)
+        }
+    }
+
+    fun dismissPopup() {
+        viewModelScope.launch {
+            state.value = state.value.copy(
+                isDialogVisible = false
+            )
+        }
     }
 
     private fun loadProfile() {
@@ -137,10 +214,38 @@ class ProfileViewModel(
 
                 is DataState.Data -> {
                     state.value = state.value.copy(
+                        /// personal details
                         preferredUsername = dataState.data?.userName ?: "",
                         religion = dataState.data?.religion ?: "",
                         maritalStatus = dataState.data?.maritalStatus ?: "",
 
+                        /// mailing address
+                        addressLine1 = dataState.data?.addresses?.first {
+                            it.addressType == "Mailing Address"
+                        }?.line1 ?: "",
+                        addressLine2 = dataState.data?.addresses?.first {
+                            it.addressType == "Mailing Address"
+                        }?.line2 ?: "",
+                        postCode = dataState.data?.addresses?.first {
+                            it.addressType == "Mailing Address"
+                        }?.postcode ?: "",
+                        city = dataState.data?.addresses?.first {
+                            it.addressType == "Mailing Address"
+                        }?.city ?: "",
+                        addressState = dataState.data?.addresses?.first {
+                            it.addressType == "Mailing Address"
+                        }?.state ?: "",
+
+                        /// employment details
+                        employmentTypeState = dataState.data?.employmentDetails?.first()?.employmentType
+                            ?: "",
+                        employmentIndustry = dataState.data?.employmentDetails?.first()?.sector
+                            ?: "",
+                        occupation = dataState.data?.employmentDetails?.first()?.occupation ?: "",
+                        nameOfEmployee = dataState.data?.employmentDetails?.first()?.companyName
+                            ?: "",
+
+                        data = dataState.data,
                     )
                 }
 

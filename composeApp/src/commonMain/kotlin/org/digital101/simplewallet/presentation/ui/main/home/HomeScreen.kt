@@ -8,12 +8,14 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
@@ -90,10 +92,14 @@ fun HomeScreen(
                     )
                 }
             }
+
             CreditCardView()
+
             /*AtmCard()*/
-                transferList()
-                LoanCardList()
+
+            transferList()
+
+            LoanCardList()
         }
     }
 }
@@ -180,6 +186,7 @@ fun CreditCardView(
         }
     }
 }
+
 @Composable
 fun AtmCard() {
     LazyRow(
@@ -224,24 +231,22 @@ fun AtmCard() {
 @Composable
 fun transferList() {
     LazyRow(
-        modifier = Modifier
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         items(3) { index ->  // Specify the number of items to show (3 in this case)
             Box(
                 modifier = Modifier
-                    .height(100.dp)
-                    .width(100.dp)
+                    .fillParentMaxWidth(1f / 3)
+                    .aspectRatio(1f)
                     .clip(RoundedCornerShape(8.dp))
                     .background(Color.White)
             ) {
                 Column(
                     verticalArrangement = Arrangement.Center,
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.wrapContentSize()
                 ) {
-
                     Image(
                         painter = painterResource(Res.drawable.bill),
                         contentDescription = "Bank Logo",

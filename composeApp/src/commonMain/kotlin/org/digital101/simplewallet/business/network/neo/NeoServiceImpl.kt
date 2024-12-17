@@ -15,14 +15,13 @@ import org.digital101.simplewallet.business.constants.NEO_BANK_BASE_URL
 import org.digital101.simplewallet.business.network.common.MainGenericResponse
 import org.digital101.simplewallet.business.network.neo.NeoService.Companion.ME
 import org.digital101.simplewallet.business.network.neo.NeoService.Companion.MEMBERSHIP
-import org.digital101.simplewallet.business.network.neo.responses.UserData
-import org.digital101.simplewallet.business.network.neo.responses.UserResponseDTO
+import org.digital101.simplewallet.business.network.neo.responses.UserDataDTO
 
 class NeoServiceImpl(
     private val httpClient: HttpClient
 ) : NeoService {
-    override suspend fun user(token: String): MainGenericResponse<UserResponseDTO?> {
-        val response = httpClient.get {
+    override suspend fun user(token: String): MainGenericResponse<UserDataDTO?> {
+        return httpClient.get {
             url {
                 headers {
                     append(HttpHeaders.Authorization, token)
@@ -30,18 +29,14 @@ class NeoServiceImpl(
                 takeFrom(NEO_BANK_BASE_URL)
                 encodedPath += ME
             }
-        }
-        return MainGenericResponse(
-            result = response.body(),
-            status = true
-        )
+        }.body()
     }
 
     override suspend fun updateUser(
         token: String,
         userId: String,
-        data: UserData
-    ): MainGenericResponse<UserResponseDTO?> {
+        data: UserDataDTO
+    ): MainGenericResponse<UserDataDTO?> {
         return httpClient.patch {
             url {
                 headers {

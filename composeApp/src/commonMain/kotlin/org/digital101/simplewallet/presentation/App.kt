@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
@@ -38,21 +39,19 @@ internal fun App(context: Context) {
                 val navigator = rememberNavController()
                 val viewModel: SharedViewModel = koinInject()
 
-                val navBackStackEntry by navigator.currentBackStackEntryAsState()
-                val currentRoute = navBackStackEntry?.destination?.route
-
                 LaunchedEffect(key1 = viewModel.tokenManager.state.value.isTokenAvailable) {
                     if (!viewModel.tokenManager.state.value.isTokenAvailable) {
-                        if (currentRoute?.contains(AppNavigation.Auth.toString()) != true) {
                             navigator.popBackStack()
                             navigator.navigate(AppNavigation.Auth)
-                        }
+                    } else {
+                        navigator.popBackStack()
+                        navigator.navigate(AppNavigation.Main)
                     }
                 }
 
                 Box(modifier = Modifier.fillMaxSize()) {
                     NavHost(
-                        startDestination = if (viewModel.tokenManager.state.value.isTokenAvailable) AppNavigation.Main else AppNavigation.Auth,
+                        startDestination = AppNavigation.Auth,
                         modifier = Modifier.fillMaxSize(),
                         navController = navigator,
                     ) {
