@@ -1,6 +1,7 @@
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Visibility
@@ -17,26 +18,32 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import org.digital101.simplewallet.domain.EditTextState
 import org.digital101.simplewallet.presentation.theme.BaseColors
+import org.jetbrains.compose.resources.stringResource
 
 @Composable
 fun CommonEditTextField(
-    text: String,
-    placeHolderText: String,
-    onchange: (String) -> Unit,
+    modifier: Modifier = Modifier,
+    state: EditTextState,
+    placeHolderText: String? = null,
+    onChange: (String) -> Unit,
     keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
     labelText: String,
-    isError: Boolean = false,
-    errorMsg: String = "",
+    keyboardActions: KeyboardActions? = null,
     singleLine: Boolean = true,
     isPassword: Boolean = false, // Add flag to handle password field
-    onPasswordVisibilityToggle: (() -> Unit)? = null // Function to toggle password visibility
 ) {
+    val focusManager = LocalFocusManager.current
+
     var isPasswordVisible by remember { mutableStateOf(!isPassword) }
 
     // If password field, show an icon to toggle visibility
@@ -47,30 +54,34 @@ fun CommonEditTextField(
     }
 
     OutlinedTextField(
-        modifier = Modifier
-            .fillMaxWidth(),
-        value = text,
-        onValueChange = { newValue ->
-            onchange(newValue)
-        },
+        value = state.value,
         singleLine = singleLine,
-        placeholder = { Text(text = placeHolderText) },
-        label = { Text(text = labelText, color = BaseColors.Gray) },
+        onValueChange = onChange,
+        isError = state.hasError,
         shape = RoundedCornerShape(12.dp),
-        isError = isError,
         keyboardOptions = keyboardOptions,
+        modifier = modifier.fillMaxWidth(),
+        placeholder = { placeHolderText?.let { Text(text = it) } },
+        label = { Text(text = labelText, color = BaseColors.Gray) },
+        keyboardActions = keyboardActions ?: when (keyboardOptions.imeAction) {
+            ImeAction.Done, ImeAction.Go, ImeAction.Search, ImeAction.Send -> KeyboardActions(onDone = {
+                focusManager.clearFocus(true)
+            })
+
+            ImeAction.Next -> KeyboardActions(onDone = { focusManager.moveFocus(FocusDirection.Next) })
+            ImeAction.Previous -> KeyboardActions(onDone = { focusManager.moveFocus(FocusDirection.Previous) })
+            ImeAction.Previous -> KeyboardActions(onDone = { focusManager.moveFocus(FocusDirection.Previous) })
+            else -> KeyboardActions.Default
+        },
         visualTransformation = visualTransformation, // Apply visual transformation for password
         colors = OutlinedTextFieldDefaults.colors(
+            focusedBorderColor = MaterialTheme.colorScheme.secondary,
             errorBorderColor = MaterialTheme.colorScheme.error,
             unfocusedBorderColor = BaseColors.Gray,
-            focusedBorderColor = MaterialTheme.colorScheme.secondary,
         ),
         trailingIcon = {
             if (isPassword) {
-                IconButton(onClick = {
-                    isPasswordVisible = !isPasswordVisible
-                    onPasswordVisibilityToggle?.invoke()
-                }) {
+                IconButton(onClick = { isPasswordVisible = !isPasswordVisible }) {
                     Icon(
                         imageVector = if (isPasswordVisible) Icons.Default.Visibility else Icons.Default.VisibilityOff,
                         contentDescription = if (isPasswordVisible) "Hide password" else "Show password"
@@ -79,12 +90,12 @@ fun CommonEditTextField(
             }
         }
     )
-    if (isError) {
+    if (state.errorMessage != null) {
         Text(
-            text = errorMsg,
-            color = Color.Red,
             fontSize = 12.sp,
-            modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp)
+            color = Color.Red,
+            text = stringResource(state.errorMessage),
+            modifier = Modifier.padding(top = 8.dp, start = 8.dp, end = 8.dp),
         )
     }
 }

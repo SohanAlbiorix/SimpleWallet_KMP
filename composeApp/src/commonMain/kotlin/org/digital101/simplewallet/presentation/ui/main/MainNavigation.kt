@@ -2,7 +2,6 @@ package org.digital101.simplewallet.presentation.ui.main
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ElevatedButton
@@ -35,7 +34,7 @@ import org.digital101.simplewallet.presentation.ui.main.home.HomeScreen
 import org.digital101.simplewallet.presentation.ui.main.settings.AccountSettings
 
 @Composable
-fun MainNav(
+fun MainNavigation(
     logout: () -> Unit,
     navigateToProfile: () -> Unit,
 ) {
@@ -57,7 +56,8 @@ fun MainNav(
         Scaffold(bottomBar = {
             BottomNavigationUI(navBottomBarController)
         }) { innerPadding ->
-            Box(modifier = Modifier.padding(innerPadding)) {
+            innerPadding.calculateTopPadding()
+            Box(modifier = Modifier.fillMaxSize()) {
                 NavHost(
                     startDestination = BottomNavItem.Home.route,
                     navController = navBottomBarController,

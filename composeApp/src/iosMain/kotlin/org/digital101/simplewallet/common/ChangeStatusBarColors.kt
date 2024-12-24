@@ -16,7 +16,7 @@ import platform.UIKit.UIWindow
 
 @OptIn(ExperimentalForeignApi::class)
 @Composable
-actual fun ChangeStatusBarColors(statusBarColor: Color) {
+actual fun ChangeStatusBarColors(color: Color) {
     val safeFrameSize = remember { mutableStateOf(0.0) }
     val window = (UIApplication.sharedApplication.windows.first() as UIWindow)
     // Getting safe area size
@@ -30,7 +30,7 @@ actual fun ChangeStatusBarColors(statusBarColor: Color) {
             x = 0.0, y = 0.0, width = Double.MAX_VALUE, height = safeFrameSize.value
         )
     )
-    statusBar.backgroundColor = statusBarColor.toUIColor()
+    statusBar.backgroundColor = color.toUIColor()
 
     SideEffect {
         UIApplication.sharedApplication.keyWindow?.addSubview(statusBar)

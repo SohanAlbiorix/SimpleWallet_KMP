@@ -27,19 +27,21 @@ fun dataModule(context: Context) = module {
     single { KtorHttpClient.httpClient(get()) }
 
     single<PingOneService> { PingOneServiceImpl(get()) }
-    single<NeoService> { NeoServiceImpl(get()) }
+
+    single { AuthInteract(get(), get()) }
+    single { CheckTokenInteract(get()) }
+    single { LogoutInteract(get()) }
+
+    single<NeoService> { NeoServiceImpl(get(), get()) }
+
+    single { UserInteract(get()) }
+    single { UpdateProfileInteract(get()) }
+    single { WalletInteract(get()) }
 
     factory { SharedViewModel(get()) }
     factory { LoginViewModel(get()) }
     factory { ProfileViewModel(get(), get()) }
     factory { HomeViewModel(get(), get()) }
-
-    single { AuthInteract(get(), get()) }
-    single { CheckTokenInteract(get()) }
-    single { LogoutInteract(get()) }
-    single { UserInteract(get(), get()) }
-    single { UpdateProfileInteract(get(), get()) }
-    single { WalletInteract(get(), get()) }
 
     single<AppDataStore> { AppDataStoreManager(context) }
     single { TokenManager(get(), get()) }

@@ -40,8 +40,9 @@ kotlin {
         iosSimulatorArm64()
     ).forEach { iosTarget ->
         iosTarget.binaries.framework {
-            baseName = "ComposeApp"
+            baseName = "composeApp"
             isStatic = true
+            freeCompilerArgs += listOf("-Xbinary=bundleId=org.digital101.simplewallet.composeApp")
         }
     }
 
@@ -54,6 +55,7 @@ kotlin {
             implementation(libs.system.ui.controller)
             implementation(libs.ktor.client.okhttp)
         }
+
         commonMain.dependencies {
             implementation(compose.runtime)
             implementation(compose.foundation)
@@ -61,14 +63,19 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+
             implementation(libs.koin.core)
             implementation(libs.koin.compose.viewmodel)
+
             implementation(libs.navigation.compose)
+
             implementation(libs.ktor.client.core)
             implementation(libs.ktor.client.content.negotiation)
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.ktor.logging)
+
             implementation(libs.androidx.datastore.preferences)
+
             implementation(compose.materialIconsExtended)
         }
 

@@ -36,7 +36,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import org.digital101.simplewallet.common.getPlatform
 import org.digital101.simplewallet.presentation.LocalPlatformContext
-import org.digital101.simplewallet.presentation.ui.main.settings.model.ProfileModel
+import org.digital101.simplewallet.presentation.ui.main.settings.domain.ListItemModel
 import org.jetbrains.compose.resources.painterResource
 import org.jetbrains.compose.resources.stringResource
 import simplewallet.composeapp.generated.resources.Res
@@ -68,31 +68,35 @@ fun AccountSettings(
     val context = LocalPlatformContext.current
 
     val profileItems = listOf(
-        ProfileModel(Res.drawable.profile, stringResource(Res.string.label_my_profile), onClick = {
-            navigateToProfile()
-            backClick()
-        }),
-        ProfileModel(
+        ListItemModel(
+            Res.drawable.profile,
+            stringResource(Res.string.label_my_profile),
+            onClick = {
+                navigateToProfile()
+                backClick()
+            },
+        ),
+        ListItemModel(
             Res.drawable.payment,
             stringResource(Res.string.label_payments_and_transfer),
             onClick = backClick
         ),
-        ProfileModel(
+        ListItemModel(
             Res.drawable.security,
             stringResource(Res.string.label_security),
             onClick = backClick
         ),
-        ProfileModel(
+        ListItemModel(
             Res.drawable.market,
             stringResource(Res.string.label_marketing_preferences),
             onClick = backClick
         ),
-        ProfileModel(
+        ListItemModel(
             Res.drawable.support,
             stringResource(Res.string.label_support_center),
             onClick = backClick
         ),
-        ProfileModel(
+        ListItemModel(
             Res.drawable.language,
             stringResource(Res.string.label_change_language),
             onClick = backClick
@@ -195,7 +199,7 @@ fun AccountSettings(
 }
 
 @Composable
-fun ProfileItemView(profileItem: ProfileModel) {
+fun ProfileItemView(profileItem: ListItemModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()

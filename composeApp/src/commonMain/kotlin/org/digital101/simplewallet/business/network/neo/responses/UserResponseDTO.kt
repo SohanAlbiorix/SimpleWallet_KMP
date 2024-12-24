@@ -81,13 +81,13 @@ data class KycDetails(
 data class Address(
     val id: String?,
     val addressType: String?,
-    val line1: String?,
-    val line2: String?,
-    val line3: String?,
-    val city: String?,
-    val state: String?,
-    val postcode: String?,
-    val country: String?
+    var line1: String?,
+    var line2: String?,
+    var line3: String?,
+    var city: String?,
+    var state: String?,
+    var postcode: String?,
+    var country: String?
 )
 
 @Serializable
@@ -101,14 +101,14 @@ data class CustomField(
 data class EmploymentDetail(
     val id: String?,
     val accountId: String?,
-    val companyName: String?,
-    val companyType: String?,
-    val employmentType: String?,
-    val occupation: String?,
-    val sector: String?,
-    val startDate: String?,
-    val addresses: List<Address>?,
-    val contactDetails: List<Contact>?
+    var companyName: String?,
+    var companyType: String?,
+    var employmentType: String?,
+    var occupation: String?,
+    var sector: String?,
+    var startDate: String?,
+    var addresses: List<Address>?,
+    var contactDetails: List<Contact>?
 )
 
 @Serializable

@@ -1,8 +1,8 @@
-package org.digital101.simplewallet.presentation.ui.main.settings.model
+package org.digital101.simplewallet.presentation.ui.main.settings.domain
 
 import org.jetbrains.compose.resources.DrawableResource
 
-data class ProfileModel(
+data class ListItemModel(
     val icon: DrawableResource,
     val title: String,
     val onClick: (() -> Unit)? = null,

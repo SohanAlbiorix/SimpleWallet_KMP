@@ -4,44 +4,17 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import org.digital101.simplewallet.business.core.DataState
+import org.digital101.simplewallet.business.core.Queue
+import org.digital101.simplewallet.business.core.UIComponent
 import org.digital101.simplewallet.business.interactors.neobank.UpdateProfileInteract
 import org.digital101.simplewallet.business.interactors.neobank.UserInteract
-import org.digital101.simplewallet.business.interactors.neobank.WalletInteract
-import org.digital101.simplewallet.business.network.neo.responses.Address
-import org.digital101.simplewallet.business.network.neo.responses.EmploymentDetail
-import org.digital101.simplewallet.business.util.isAddress1
-import org.digital101.simplewallet.business.util.isAddress2
-import org.digital101.simplewallet.business.util.isAnnualIncome
-import org.digital101.simplewallet.business.util.isCity
-import org.digital101.simplewallet.business.util.isEmployeeIndustry
-import org.digital101.simplewallet.business.util.isEmployeeType
-import org.digital101.simplewallet.business.util.isMaritalStatus
-import org.digital101.simplewallet.business.util.isNameOccupation
-import org.digital101.simplewallet.business.util.isNameOfEmployee
-import org.digital101.simplewallet.business.util.isPostCode
-import org.digital101.simplewallet.business.util.isPreferredName
-import org.digital101.simplewallet.business.util.isReligion
-import org.digital101.simplewallet.business.util.isState
-import org.jetbrains.compose.resources.getString
-import simplewallet.composeapp.generated.resources.Res
-import simplewallet.composeapp.generated.resources.validation_please_enter_Preferred_name
-import simplewallet.composeapp.generated.resources.validation_please_enter_Religion
-import simplewallet.composeapp.generated.resources.validation_please_enter_address1
-import simplewallet.composeapp.generated.resources.validation_please_enter_address2
-import simplewallet.composeapp.generated.resources.validation_please_enter_city
-import simplewallet.composeapp.generated.resources.validation_please_enter_employ_annual_income
-import simplewallet.composeapp.generated.resources.validation_please_enter_employ_industry
-import simplewallet.composeapp.generated.resources.validation_please_enter_employ_name
-import simplewallet.composeapp.generated.resources.validation_please_enter_employ_occupation
-import simplewallet.composeapp.generated.resources.validation_please_enter_employ_type
-import simplewallet.composeapp.generated.resources.validation_please_enter_marital_status
-import simplewallet.composeapp.generated.resources.validation_please_enter_postcode
-import simplewallet.composeapp.generated.resources.validation_please_enter_state
+import org.digital101.simplewallet.business.util.isValidText
+import org.digital101.simplewallet.domain.errorMessage
+import org.digital101.simplewallet.domain.updateValue
 
 
 class ProfileViewModel(
@@ -50,81 +23,17 @@ class ProfileViewModel(
 ) : ViewModel() {
     val state: MutableState<ProfileState> = mutableStateOf(ProfileState())
 
-    var preferredNameErrorMessage = MutableStateFlow("")
-    var religionErrorMessage = MutableStateFlow("")
-    var maritalStatusErrorMessage = MutableStateFlow("")
-    var addressLine1ErrorMessage = MutableStateFlow("")
-    var addressLine2ErrorMessage = MutableStateFlow("")
-    var postCodeErrorMessage = MutableStateFlow("")
-    var cityErrorMessage = MutableStateFlow("")
-    var stateErrorMessage = MutableStateFlow("")
-    var employeeTypeErrorMessage = MutableStateFlow("")
-    var employeeIndustryErrorMessage = MutableStateFlow("")
-    var nameOfEmployeeErrorMessage = MutableStateFlow("")
-    var occupationErrorMessage = MutableStateFlow("")
-    var annualIncomeErrorMessage = MutableStateFlow("")
-
     fun onTriggerEvent(event: ProfileEvent) {
         when (event) {
-            is ProfileEvent.OnUpdatePreferredName -> {
-                OnUpdatePreferredName(event.value)
-            }
-
-            is ProfileEvent.OnUpdateReligion -> {
-                onUpdateReligion(event.value)
-            }
-
-            is ProfileEvent.OnUpdateMaritalStatus -> {
-                onUpdateMaritalStatus(event.value)
-            }
-
-            is ProfileEvent.OnUpdateAddressLine1 -> {
-                onUpdateAddressLine1(event.value)
-            }
-
-            is ProfileEvent.OnUpdateAddressLine2 -> {
-                onUpdateAddressLine2(event.value)
-            }
-
-            is ProfileEvent.OnUpdatePostCode -> {
-                onUpdatePostCode(event.value)
-            }
-
-            is ProfileEvent.OnUpdateCity -> {
-                onUpdateCity(event.value)
-            }
-
-            is ProfileEvent.OnUpdateState -> {
-                onUpdateState(event.value)
-            }
-
-            is ProfileEvent.OnUpdateEmploymentType -> {
-                onUpdateType(event.value)
-            }
-
-            is ProfileEvent.OnUpdateEmploymentIndustry -> {
-                onUpdateIndustry(event.value)
-            }
-
-            is ProfileEvent.OnUpdateEmployName -> {
-                onUpdateName(event.value)
-            }
-
-            is ProfileEvent.OnUpdateEmployOccupation -> {
-                onUpdateOccupation(event.value)
-            }
-
-            is ProfileEvent.OnUpdateEmployAnnualIncome -> {
-                onUpdateIncome(event.value)
-            }
+            is ProfileEvent.UpdateValue -> validateOrUpdate(event)
 
             is ProfileEvent.Error -> {
-
+                val queue: Queue<UIComponent> = state.value.errorQueue
+                queue.add(event.uiComponent)
+                state.value = state.value.copy(errorQueue = queue)
             }
 
-            ProfileEvent.UpdateDate -> {
-                updateProfile()
-            }
+            ProfileEvent.UpdateProfile -> updateProfile()
         }
     }
 
@@ -133,48 +42,32 @@ class ProfileViewModel(
     }
 
     private fun updateProfile() {
-        val data = state.value.data
-        if (data != null) {
-            val updatedAddress = mutableListOf<Address>()
-            val address = data.addresses
-            if (!address.isNullOrEmpty()) {
-                address.forEach {
-                    if (it.addressType == "Mailing Address") {
-                        updatedAddress.add(
-                            it.copy(
-                                line1 = state.value.addressLine1,
-                                line2 = state.value.addressLine2,
-                                postcode = state.value.postCode,
-                                city = state.value.city,
-                                state = state.value.addressState,
-                            )
-                        )
-                    } else {
-                        updatedAddress.add(it)
-                    }
-                }
-            }
-
-            val updatedEmploymentDetail = mutableListOf<EmploymentDetail>()
-            val employmentDetail = data.employmentDetails
-            if (!employmentDetail.isNullOrEmpty()) {
-                updatedEmploymentDetail.add(
-                    employmentDetail.first().copy(
-                        employmentType = state.value.employmentTypeState,
-                        sector = state.value.employmentIndustry,
-                        occupation = state.value.occupation,
-                        companyName = state.value.nameOfEmployee,
-                    )
-                )
-            }
-
+        state.value.data?.let { data ->
             updateProfileInteract.execute(
                 data = data.copy(
-                    userName = state.value.preferredUsername,
-                    religion = state.value.religion,
-                    maritalStatus = state.value.maritalStatus,
-                    addresses = updatedAddress,
-                    employmentDetails = updatedEmploymentDetail,
+                    userName = state.value.username.value,
+                    religion = state.value.religion.value,
+                    maritalStatus = state.value.maritalStatus.value,
+                    addresses = data.addresses.also { addresses ->
+                        addresses?.first { address ->
+                            address.addressType?.contains("") == true
+                        }?.also {
+                            it.line1 = state.value.addressLine1.value
+                            it.line2 = state.value.addressLine2.value
+                            it.line3 = state.value.addressLine3.value
+                            it.postcode = state.value.postCode.value
+                            it.city = state.value.city.value
+                            it.state = state.value.state.value
+                        }
+                    },
+                    employmentDetails = data.employmentDetails?.also { details ->
+                        details.first().also {
+                            it.employmentType = state.value.employmentType.value
+                            it.sector = state.value.sector.value
+                            it.occupation = state.value.occupation.value
+                            it.companyName = state.value.nameOfEmployee.value
+                        }
+                    },
                 )
             ).onEach { dataState ->
                 when (dataState) {
@@ -214,37 +107,40 @@ class ProfileViewModel(
                 }
 
                 is DataState.Data -> {
+                    val address =
+                        dataState.data?.addresses?.first { it.addressType?.contains("Mailing") == true }
+                    val employmentDetail = dataState.data?.employmentDetails?.first()
                     state.value = state.value.copy(
                         /// personal details
-                        preferredUsername = dataState.data?.userName ?: "",
-                        religion = dataState.data?.religion ?: "",
-                        maritalStatus = dataState.data?.maritalStatus ?: "",
+                        username = state.value.username.copy(
+                            value = dataState.data?.userName ?: ""
+                        ),
+                        religion = state.value.religion.copy(
+                            value = dataState.data?.religion ?: ""
+                        ),
+                        maritalStatus = state.value.maritalStatus.copy(
+                            value = dataState.data?.maritalStatus ?: ""
+                        ),
 
                         /// mailing address
-                        addressLine1 = dataState.data?.addresses?.first {
-                            it.addressType == "Mailing Address"
-                        }?.line1 ?: "",
-                        addressLine2 = dataState.data?.addresses?.first {
-                            it.addressType == "Mailing Address"
-                        }?.line2 ?: "",
-                        postCode = dataState.data?.addresses?.first {
-                            it.addressType == "Mailing Address"
-                        }?.postcode ?: "",
-                        city = dataState.data?.addresses?.first {
-                            it.addressType == "Mailing Address"
-                        }?.city ?: "",
-                        addressState = dataState.data?.addresses?.first {
-                            it.addressType == "Mailing Address"
-                        }?.state ?: "",
+                        addressLine1 = state.value.addressLine1.copy(value = address?.line1 ?: ""),
+                        addressLine2 = state.value.addressLine2.copy(value = address?.line2 ?: ""),
+                        addressLine3 = state.value.addressLine3.copy(value = address?.line3 ?: ""),
+                        postCode = state.value.postCode.copy(value = address?.postcode ?: ""),
+                        city = state.value.city.copy(value = address?.city ?: ""),
+                        state = state.value.state.copy(value = address?.state ?: ""),
 
                         /// employment details
-                        employmentTypeState = dataState.data?.employmentDetails?.first()?.employmentType
-                            ?: "",
-                        employmentIndustry = dataState.data?.employmentDetails?.first()?.sector
-                            ?: "",
-                        occupation = dataState.data?.employmentDetails?.first()?.occupation ?: "",
-                        nameOfEmployee = dataState.data?.employmentDetails?.first()?.companyName
-                            ?: "",
+                        employmentType = state.value.employmentType.copy(
+                            value = employmentDetail?.employmentType ?: ""
+                        ),
+                        sector = state.value.sector.copy(value = employmentDetail?.sector ?: ""),
+                        nameOfEmployee = state.value.nameOfEmployee.copy(
+                            value = employmentDetail?.companyName ?: ""
+                        ),
+                        occupation = state.value.occupation.copy(
+                            value = employmentDetail?.occupation ?: ""
+                        ),
 
                         data = dataState.data,
                     )
@@ -259,146 +155,25 @@ class ProfileViewModel(
         }.launchIn(viewModelScope)
     }
 
-    fun OnUpdatePreferredName(value: String) {
-        state.value = state.value.copy(preferredUsername = value)
-        viewModelScope.launch {
-            preferredNameErrorMessage.value = if (isPreferredName(value)) {
-                getString(Res.string.validation_please_enter_Preferred_name)
-            } else {
-                ""
-            }
-        }
-    }
-
-    fun onUpdateReligion(value: String) {
-        state.value = state.value.copy(religion = value)
-        viewModelScope.launch {
-            religionErrorMessage.value = if (isReligion(value)) {
-                getString(Res.string.validation_please_enter_Religion)
-            } else {
-                ""
-            }
-        }
-    }
-
-    fun onUpdateMaritalStatus(value: String) {
-        state.value = state.value.copy(maritalStatus = value)
-        viewModelScope.launch {
-            religionErrorMessage.value = if (isMaritalStatus(value)) {
-                getString(Res.string.validation_please_enter_marital_status)
-            } else {
-                ""
-            }
-        }
-    }
-
-    fun onUpdateAddressLine1(value: String) {
-        state.value = state.value.copy(addressLine1 = value)
-        viewModelScope.launch {
-            addressLine1ErrorMessage.value = if (isAddress1(value)) {
-                getString(Res.string.validation_please_enter_address1)
-            } else {
-                ""
-            }
-        }
-    }
-
-    fun onUpdateAddressLine2(value: String) {
-        state.value = state.value.copy(addressLine2 = value)
-        viewModelScope.launch {
-            addressLine2ErrorMessage.value = if (isAddress2(value)) {
-                getString(Res.string.validation_please_enter_address2)
-            } else {
-                ""
-            }
-        }
-    }
-
-    fun onUpdatePostCode(value: String) {
-        state.value = state.value.copy(postCode = value)
-        viewModelScope.launch {
-            postCodeErrorMessage.value = if (isPostCode(value)) {
-                getString(Res.string.validation_please_enter_postcode)
-            } else {
-                ""
-            }
-        }
-    }
-
-    fun onUpdateCity(value: String) {
-        state.value = state.value.copy(city = value)
-        viewModelScope.launch {
-            cityErrorMessage.value = if (isCity(value)) {
-                getString(Res.string.validation_please_enter_city)
-            } else {
-                ""
-            }
-        }
-    }
-
-    fun onUpdateState(value: String) {
-        state.value = state.value.copy(addressState = value)
-        viewModelScope.launch {
-            stateErrorMessage.value = if (isState(value)) {
-                getString(Res.string.validation_please_enter_state)
-            } else {
-                ""
-            }
-        }
-    }
-
-    fun onUpdateType(value: String) {
-        state.value = state.value.copy(employmentTypeState = value)
-        viewModelScope.launch {
-            employeeTypeErrorMessage.value = if (isEmployeeType(value)) {
-                getString(Res.string.validation_please_enter_employ_type)
-            } else {
-                ""
-            }
-        }
-    }
-
-    fun onUpdateIndustry(value: String) {
-        state.value = state.value.copy(employmentIndustry = value)
-        viewModelScope.launch {
-            employeeIndustryErrorMessage.value = if (isEmployeeIndustry(value)) {
-                getString(Res.string.validation_please_enter_employ_industry)
-            } else {
-                ""
-            }
-        }
-    }
-
-    fun onUpdateName(value: String) {
-        state.value = state.value.copy(nameOfEmployee = value)
-        viewModelScope.launch {
-            nameOfEmployeeErrorMessage.value = if (isNameOfEmployee(value)) {
-                getString(Res.string.validation_please_enter_employ_name)
-            } else {
-                ""
-            }
-        }
-    }
-
-    fun onUpdateOccupation(value: String) {
-        state.value = state.value.copy(occupation = value)
-        viewModelScope.launch {
-            occupationErrorMessage.value = if (isNameOccupation(value)) {
-                getString(Res.string.validation_please_enter_employ_occupation)
-            } else {
-                ""
-            }
-        }
-    }
-
-    fun onUpdateIncome(value: String) {
-        state.value = state.value.copy(annualIncome = value)
-        viewModelScope.launch {
-            annualIncomeErrorMessage.value = if (isAnnualIncome(value)) {
-                getString(Res.string.validation_please_enter_employ_annual_income)
-            } else {
-                ""
-            }
+    private fun validateOrUpdate(event: ProfileEvent.UpdateValue) {
+        if (event.validation) {
+            val isValid = event.value.isValidText
+            event.field.textField(state.value)
+                ?.updateValue(event.value)
+                ?.copy(
+                    hasError = !isValid,
+                    errorMessage = when {
+                        !isValid -> event.field.errorMessage
+                        else -> null
+                    }
+                )
+                ?.updateState(state.value)
+                ?.let { state.value = it }
+        } else {
+            event.field.textField(state.value)
+                ?.updateValue(event.value)
+                ?.updateState(state.value)
+                ?.let { state.value = it }
         }
     }
 }

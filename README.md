@@ -56,12 +56,3 @@ On iOS:
 Open the iOS project in Xcode (located in iosApp directory).
 Select a target device or simulator and run the project.
 
-
-<div>
-   <img src="/screenshots/Screen_01.png" width="150px"</img>
-   <img src="/screenshots/Screen_02.png" width="150px"</img>
-   <img src="/screenshots/Screen_03.png" width="150px"</img>
-   <img src="/screenshots/Screen_04.png" width="150px"</img>
-   <img src="/screenshots/Screen_05.png" width="150px"</img>
-</div>
-

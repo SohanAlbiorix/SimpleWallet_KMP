@@ -5,6 +5,7 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
 import org.digital101.simplewallet.common.ChangeStatusBarColors
 
 private val LightColorScheme = lightColorScheme(
@@ -19,7 +20,8 @@ private val LightColorScheme = lightColorScheme(
 fun AppTheme(
     content: @Composable () -> Unit
 ) {
-    ChangeStatusBarColors(LightColorScheme.primary)
+//    ChangeStatusBarColors(LightColorScheme.primary)
+    ChangeStatusBarColors(Color.Black)
 
     MaterialTheme(
         colorScheme = LightColorScheme,

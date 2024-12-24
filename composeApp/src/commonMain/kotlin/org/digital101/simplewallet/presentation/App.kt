@@ -5,23 +5,20 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.compositionLocalOf
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import org.digital101.simplewallet.common.Context
 import org.digital101.simplewallet.di.dataModule
 import org.digital101.simplewallet.presentation.navigation.AppNavigation
 import org.digital101.simplewallet.presentation.theme.AppTheme
 import org.digital101.simplewallet.presentation.tokenManager.TokenEvent
-import org.digital101.simplewallet.presentation.ui.auth.AuthNav
-import org.digital101.simplewallet.presentation.ui.main.MainNav
+import org.digital101.simplewallet.presentation.ui.auth.AuthNavigation
+import org.digital101.simplewallet.presentation.ui.auth.login.viewModel.LoginViewModel
+import org.digital101.simplewallet.presentation.ui.main.MainNavigation
 import org.digital101.simplewallet.presentation.ui.main.profile.ProfileScreen
-import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.ProfileViewModel
 import org.koin.compose.KoinApplication
 import org.koin.compose.koinInject
 
@@ -56,13 +53,13 @@ internal fun App(context: Context) {
                         navController = navigator,
                     ) {
                         composable<AppNavigation.Auth> {
-                            AuthNav(navigateToMain = {
+                            AuthNavigation(navigateToMain = {
                                 navigator.popBackStack()
                                 navigator.navigate(AppNavigation.Main)
                             })
                         }
                         composable<AppNavigation.Main> {
-                            MainNav(
+                            MainNavigation(
                                 logout = {
                                     viewModel.tokenManager.onTriggerEvent(TokenEvent.Logout)
                                     navigator.navigate(AppNavigation.Auth)

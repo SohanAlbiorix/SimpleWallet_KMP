@@ -5,7 +5,7 @@ import androidx.compose.ui.graphics.Color
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 
 @Composable
-actual fun ChangeStatusBarColors(statusBarColor: Color) {
+actual fun ChangeStatusBarColors(color: Color) {
     val systemUiController = rememberSystemUiController()
-    systemUiController.setStatusBarColor(statusBarColor)
+    systemUiController.setStatusBarColor(color)
 }

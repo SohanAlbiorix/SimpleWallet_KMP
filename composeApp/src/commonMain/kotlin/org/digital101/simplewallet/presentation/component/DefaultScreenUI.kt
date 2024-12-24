@@ -3,7 +3,6 @@ package org.digital101.simplewallet.presentation.component
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -69,6 +67,7 @@ fun DefaultScreenUI(
 ) {
 
     Scaffold(
+        modifier = Modifier.fillMaxSize(),
         topBar = {
             TopAppBar(
                 colors = TopAppBarDefaults.topAppBarColors(
@@ -82,7 +81,12 @@ fun DefaultScreenUI(
                                 colors = ButtonDefaults.buttonColors(
                                     containerColor = MaterialTheme.colorScheme.background
                                 ),
-                                contentPadding = PaddingValues(start = 10.dp),
+                                contentPadding = PaddingValues(
+                                    start = 10.dp,
+                                    top = 0.dp,
+                                    bottom = 0.dp,
+                                    end = 0.dp
+                                ),
                                 onClick = onHamburgerClick,
                                 shape = RectangleShape,
                             ) {
@@ -118,6 +122,7 @@ fun DefaultScreenUI(
                                 title != null -> title
                                 else -> ""
                             },
+                            modifier = Modifier.padding(start = 8.dp),
                             color = MaterialTheme.colorScheme.secondary
                         )
                     }
@@ -139,8 +144,7 @@ fun DefaultScreenUI(
         }
     ) {
         Box(
-            modifier = Modifier.padding(top = it.calculateTopPadding())
-                .fillMaxSize()
+            modifier = Modifier.fillMaxSize().padding(it)
                 .background(MaterialTheme.colorScheme.background),
             contentAlignment = Alignment.Center
         ) {

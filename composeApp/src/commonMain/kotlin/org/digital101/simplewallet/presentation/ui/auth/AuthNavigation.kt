@@ -12,7 +12,7 @@ import org.digital101.simplewallet.presentation.ui.auth.login.viewModel.LoginVie
 import org.koin.compose.koinInject
 
 @Composable
-internal fun AuthNav(viewModel: LoginViewModel = koinInject(), navigateToMain: () -> Unit) {
+internal fun AuthNavigation(viewModel: LoginViewModel = koinInject(), navigateToMain: () -> Unit) {
     val navigator = rememberNavController()
     NavHost(
         startDestination = AuthNavigation.Login,
@@ -21,7 +21,6 @@ internal fun AuthNav(viewModel: LoginViewModel = koinInject(), navigateToMain: (
     ) {
         composable<AuthNavigation.Login> {
             LoginScreen(
-                viewModel,
                 state = viewModel.state.value,
                 events = viewModel::onTriggerEvent,
                 navigateToMain = navigateToMain,

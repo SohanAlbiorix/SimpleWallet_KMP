@@ -1,65 +1,18 @@
 package org.digital101.simplewallet.business.util
 
-fun isValidEmail(email: String): Boolean {
-    val regex = Regex("^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\$")
-    return email.isEmpty() || !email.matches(regex)
+object Validator {
+    const val EMAIL = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}\$"
+    const val PASSWORD = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{6,15}\$"
 }
 
-fun isValidPassword(password: String): Boolean {
-    val regex = Regex("^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=])(?=\\S+$).{6,15}$")
-    return password.isEmpty() || !password.matches(regex)
-}
+private val String.toRegex: Regex
+    get() = Regex(this)
 
-fun isPreferredName(name: String): Boolean {
-    return name.isEmpty()
-}
+val String.isValidText: Boolean
+    get() = this.isNotEmpty()
 
-fun isReligion(religion: String): Boolean {
-    return religion.isEmpty()
-}
+val String.isValidEmail: Boolean
+    get() = this.isValidText || this.matches(Validator.EMAIL.toRegex)
 
-fun isMaritalStatus(status: String): Boolean {
-    return status.isEmpty()
-}
-
-fun isAddress1(addressOne: String): Boolean {
-    return addressOne.isEmpty()
-}
-
-fun isAddress2(addressTwo: String): Boolean {
-    return addressTwo.isEmpty()
-}
-
-fun isPostCode(postCode: String): Boolean {
-    return postCode.isEmpty()
-}
-
-fun isCity(city: String): Boolean {
-    return city.isEmpty()
-}
-
-fun isState(state: String): Boolean {
-    return state.isEmpty()
-}
-
-fun isEmployeeType(type: String): Boolean {
-    return type.isEmpty()
-}
-
-fun isEmployeeIndustry(industry: String): Boolean {
-    return industry.isEmpty()
-}
-
-fun isNameOfEmployee(employeeName: String): Boolean {
-    return employeeName.isEmpty()
-}
-
-fun isNameOccupation(occupation: String): Boolean {
-    return occupation.isEmpty()
-}
-
-fun isAnnualIncome(income: String): Boolean {
-    return income.isEmpty()
-}
-
-
+val String.isValidPassword: Boolean
+    get() = this.isNotEmpty() || this.matches(Validator.PASSWORD.toRegex)

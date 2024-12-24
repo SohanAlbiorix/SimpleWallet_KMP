@@ -1,6 +1,5 @@
 package org.digital101.simplewallet.business.network.pingOne
 
-import org.digital101.simplewallet.business.network.common.MainGenericResponse
 import org.digital101.simplewallet.business.network.pingOne.responses.AuthorizeResponsesDTO
 import org.digital101.simplewallet.business.network.pingOne.responses.LoginResponsesDTO
 import org.digital101.simplewallet.business.network.pingOne.responses.ObtainTokenResponseDTO
@@ -16,11 +15,7 @@ interface PingOneService {
 
     suspend fun authorize(): AuthorizeResponsesDTO?
 
-    suspend fun login(
-        email: String,
-        password: String,
-        flowId: String
-    ): LoginResponsesDTO?
+    suspend fun login(email: String, password: String, flowId: String): LoginResponsesDTO?
 
     suspend fun resumeForToken(flowId: String): ResumeForTokenDTO?
 

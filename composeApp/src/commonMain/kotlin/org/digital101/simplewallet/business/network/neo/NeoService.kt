@@ -12,13 +12,9 @@ interface NeoService {
         const val WALLET = "wallet-service/1.0.0/wallets"
     }
 
-    suspend fun user(token: String): MainGenericResponse<UserDataDTO?>
+    suspend fun user(): MainGenericResponse<UserDataDTO?>
 
-    suspend fun updateUser(
-        token: String,
-        userId: String,
-        data: UserDataDTO,
-    ): MainGenericResponse<UserDataDTO?>
+    suspend fun updateUser(data: UserDataDTO): MainGenericResponse<UserDataDTO?>
 
-    suspend fun wallet(token: String) : PaginatedGenericResponse<WalletResponseDTO>
+    suspend fun wallet(): PaginatedGenericResponse<WalletResponseDTO>
 }
