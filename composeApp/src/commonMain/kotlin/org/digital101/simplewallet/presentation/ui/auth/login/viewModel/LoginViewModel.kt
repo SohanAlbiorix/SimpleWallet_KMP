@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
-import kotlinx.coroutines.launch
 import org.digital101.simplewallet.business.core.DataState
 import org.digital101.simplewallet.business.core.Queue
 import org.digital101.simplewallet.business.core.UIComponent
@@ -40,8 +39,8 @@ class LoginViewModel(
     private fun validateOrUpdate(event: LoginEvent.UpdateValue) {
         if (event.validation) {
             val isValid = when (event.field) {
-                LoginFieldType.EMAIL -> event.value.isValidText && event.value.isValidEmail
-                LoginFieldType.PASSWORD -> event.value.isValidText && event.value.isValidPassword
+                LoginFieldType.EMAIL -> event.value.isValidEmail
+                LoginFieldType.PASSWORD -> event.value.isValidPassword
                 else -> event.value.isValidText
             }
             event.field.textField(state.value)

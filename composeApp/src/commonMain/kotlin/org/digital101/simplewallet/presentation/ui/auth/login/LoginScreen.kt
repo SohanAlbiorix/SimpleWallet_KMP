@@ -6,37 +6,27 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
-import androidx.compose.ui.window.DialogProperties
 import org.digital101.simplewallet.domain.FieldType
 import org.digital101.simplewallet.presentation.component.DefaultButton
 import org.digital101.simplewallet.presentation.component.DefaultScreenUI
 import org.digital101.simplewallet.presentation.ui.auth.login.viewModel.LoginEvent
 import org.digital101.simplewallet.presentation.ui.auth.login.viewModel.LoginFieldType
 import org.digital101.simplewallet.presentation.ui.auth.login.viewModel.LoginState
-import org.digital101.simplewallet.presentation.ui.auth.login.viewModel.LoginViewModel
 import org.digital101.simplewallet.presentation.ui.auth.login.viewModel.isValid
 import org.digital101.simplewallet.presentation.ui.auth.login.viewModel.textField
 import org.jetbrains.compose.resources.painterResource
@@ -79,7 +69,7 @@ fun LoginScreen(
                     color = MaterialTheme.colorScheme.secondary
                 ),
             )
-            LoginFieldType.entries.forEach { type ->
+            LoginFieldType.entries.forEachIndexed { index, type ->
                 when (type.type) {
                     FieldType.INPUT -> type.textField(state)?.let { field ->
                         Spacer(modifier = Modifier.padding(top = 24.dp))
@@ -88,8 +78,12 @@ fun LoginScreen(
                             labelText = stringResource(field.label),
                             keyboardOptions = KeyboardOptions(
                                 keyboardType = KeyboardType.Text,
-                                imeAction = ImeAction.Next
+                                imeAction = when {
+                                    LoginFieldType.entries.size - 1 == index -> ImeAction.Done
+                                    else -> ImeAction.Next
+                                }
                             ),
+                            isPassword = type == LoginFieldType.PASSWORD,
                             onChange = { text ->
                                 events(
                                     LoginEvent.UpdateValue(

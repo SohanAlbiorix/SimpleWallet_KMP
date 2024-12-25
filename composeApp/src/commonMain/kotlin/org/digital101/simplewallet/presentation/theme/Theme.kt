@@ -40,18 +40,9 @@ fun DefaultCardColorsTheme() = CardColors(
 )
 
 @Composable
-fun DefaultButtonWithBorderPrimaryTheme() = buttonColors(
-    containerColor = MaterialTheme.colorScheme.background,
-    contentColor = MaterialTheme.colorScheme.primary,
-    disabledContainerColor = MaterialTheme.colorScheme.background,
-    // disabledBackgroundColor = MaterialTheme.colorScheme.background,
-    disabledContentColor = MaterialTheme.colorScheme.primary
-)
-
-@Composable
 fun DefaultButtonTheme() = buttonColors(
     containerColor = MaterialTheme.colorScheme.tertiary,
     contentColor = MaterialTheme.colorScheme.secondary,
-    // disabledBackgroundColor = MaterialTheme.colorScheme.background,
-    disabledContentColor = MaterialTheme.colorScheme.primary
+    disabledContainerColor = MaterialTheme.colorScheme.tertiary.copy(alpha = 0.12f),
+    disabledContentColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.38f)
 )

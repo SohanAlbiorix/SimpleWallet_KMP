@@ -24,7 +24,6 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import org.digital101.simplewallet.business.core.ProgressBarState
 import org.digital101.simplewallet.presentation.theme.DefaultButtonTheme
-import org.digital101.simplewallet.presentation.theme.DefaultButtonWithBorderPrimaryTheme
 
 val DEFAULT__BUTTON_SIZE = 50.dp
 val DEFAULT__BUTTON_SIZE_EXTRA = 60.dp
@@ -89,7 +88,7 @@ fun DefaultButton(
         elevation = if (enableElevation) ButtonDefaults.buttonElevation() else ButtonDefaults.buttonElevation(
             0.dp
         ),
-        colors = if (enabled) DefaultButtonTheme() else DefaultButtonWithBorderPrimaryTheme(),
+        colors = DefaultButtonTheme(),
         border = BorderStroke(
             1.dp,
             MaterialTheme.colorScheme.primary

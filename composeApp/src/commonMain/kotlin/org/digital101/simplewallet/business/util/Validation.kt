@@ -12,7 +12,7 @@ val String.isValidText: Boolean
     get() = this.isNotEmpty()
 
 val String.isValidEmail: Boolean
-    get() = this.isValidText || this.matches(Validator.EMAIL.toRegex)
+    get() = this.isValidText && this.matches(Validator.EMAIL.toRegex)
 
 val String.isValidPassword: Boolean
-    get() = this.isNotEmpty() || this.matches(Validator.PASSWORD.toRegex)
+    get() = this.isValidText && this.matches(Validator.PASSWORD.toRegex)

@@ -1,7 +1,6 @@
 package org.digital101.simplewallet.domain
 
-import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.ProfileFieldType
-import org.digital101.simplewallet.presentation.ui.main.profile.viewModel.ProfileState
+import org.digital101.simplewallet.business.util.isValidText
 import org.jetbrains.compose.resources.StringResource
 
 data class EditTextState(
@@ -18,4 +17,4 @@ fun EditTextState.updateValue(value: String?): EditTextState {
 }
 
 val EditTextState.isValid : Boolean
-    get() = if(this.validation) !this.hasError else true
+    get() = if (this.validation) (!this.hasError && this.value.isValidText) else true
