@@ -24,6 +24,10 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -34,6 +38,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import org.digital101.simplewallet.common.ExpandableListItem
 import org.digital101.simplewallet.domain.FieldType
 import org.digital101.simplewallet.domain.ToolBarButton
 import org.digital101.simplewallet.presentation.component.DefaultButton
@@ -63,7 +68,6 @@ fun ProfileScreen(
     val state = viewModel.state.value
     val events = viewModel::onTriggerEvent
 
-    // State to toggle dialog visibility
     DefaultScreenUI(
         title = stringResource(Res.string.label_my_profile),
         leading = ToolBarButton(
@@ -82,50 +86,120 @@ fun ProfileScreen(
                 .verticalScroll(rememberScrollState())
         ) {
             Spacer(modifier = Modifier.padding(top = 12.dp))
-            ProfileFieldType.entries.forEach { type ->
-                when (type.type) {
-                    FieldType.EXPANDED_HEADER -> {
-                        val text = when (type) {
-                            ProfileFieldType.PERSONAL_DETAILS -> stringResource(Res.string.label_personal_details)
-                            ProfileFieldType.MAILING_ADDRESS -> stringResource(Res.string.label_mailing_address)
-                            else -> stringResource(Res.string.label_employment_details)
-                        }
-                        Spacer(modifier = Modifier.padding(top = 24.dp))
-                        Text(
-                            text = text,
-                            color = Color.Black,
-                            modifier = Modifier.padding(bottom = 24.dp, top = 8.dp),
-                            style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.Bold),
-                        )
-                    }
 
-                    FieldType.INPUT -> type.textField(state)?.let { field ->
-                        Spacer(modifier = Modifier.padding(top = 6.dp))
-                        CommonEditTextField(
-                            state = field,
-                            labelText = stringResource(field.label),
-                            keyboardOptions = KeyboardOptions(
-                                keyboardType = KeyboardType.Text,
-                                imeAction = ImeAction.Next
-                            ),
-                            onChange = { text ->
-                                events(
-                                    ProfileEvent.UpdateValue(
-                                        value = text,
-                                        field = type,
-                                        validation = field.validation,
-                                    )
+            // State for expandable sections
+            var isPersonalDetailsExpanded by remember { mutableStateOf(true) }
+            var isMailingAddressExpanded by remember { mutableStateOf(true) }
+            var isEmploymentDetailsExpanded by remember { mutableStateOf(true) }
+
+            ExpandableListItem(
+                title = stringResource(Res.string.label_personal_details),
+                expanded = isPersonalDetailsExpanded,
+                onCardArrowClick = { isPersonalDetailsExpanded = !isPersonalDetailsExpanded },
+                content = {
+                    ProfileFieldType.entries.take(4).forEach { type ->
+                        when (type.type) {
+                            FieldType.EXPANDED_HEADER -> {
+                            }
+
+                            FieldType.INPUT -> type.textField(state)?.let { field ->
+                                CommonEditTextField(
+                                    state = field,
+                                    labelText = stringResource(field.label),
+                                    keyboardOptions = KeyboardOptions(
+                                        keyboardType = KeyboardType.Text,
+                                        imeAction = ImeAction.Next
+                                    ),
+                                    onChange = { text ->
+                                        events(
+                                            ProfileEvent.UpdateValue(
+                                                value = text,
+                                                field = type,
+                                                validation = field.validation,
+                                            )
+                                        )
+                                    }
                                 )
                             }
-                        )
+
+                            else -> Unit
+                        }
                     }
-
-                    else -> Unit
                 }
-            }
+            )
 
-            Spacer(modifier = Modifier.padding(top = 12.dp))
+            ExpandableListItem(
+                title = stringResource(Res.string.label_mailing_address),
+                expanded = isMailingAddressExpanded,
+                onCardArrowClick = { isMailingAddressExpanded = !isMailingAddressExpanded },
+                content = {
+                    ProfileFieldType.entries.drop(4).take(7).forEach { type ->
+                        when (type.type) {
+                            FieldType.EXPANDED_HEADER -> {
+                            }
 
+                            FieldType.INPUT -> type.textField(state)?.let { field ->
+                                CommonEditTextField(
+                                    state = field,
+                                    labelText = stringResource(field.label),
+                                    keyboardOptions = KeyboardOptions(
+                                        keyboardType = KeyboardType.Text,
+                                        imeAction = ImeAction.Next
+                                    ),
+                                    onChange = { text ->
+                                        events(
+                                            ProfileEvent.UpdateValue(
+                                                value = text,
+                                                field = type,
+                                                validation = field.validation,
+                                            )
+                                        )
+                                    }
+                                )
+                            }
+
+                            else -> Unit
+                        }
+                    }
+                }
+            )
+
+            ExpandableListItem(
+                title = stringResource(Res.string.label_employment_details),
+                expanded = isEmploymentDetailsExpanded,
+                onCardArrowClick = { isEmploymentDetailsExpanded = !isEmploymentDetailsExpanded },
+                content = {
+                    ProfileFieldType.entries.drop(11).take(6).forEach { type ->
+                        when (type.type) {
+                            FieldType.EXPANDED_HEADER -> {
+                            }
+
+                            FieldType.INPUT -> type.textField(state)?.let { field ->
+                                CommonEditTextField(
+                                    state = field,
+                                    labelText = stringResource(field.label),
+                                    keyboardOptions = KeyboardOptions(
+                                        keyboardType = KeyboardType.Text,
+                                        imeAction = ImeAction.Next
+                                    ),
+                                    onChange = { text ->
+                                        events(
+                                            ProfileEvent.UpdateValue(
+                                                value = text,
+                                                field = type,
+                                                validation = field.validation,
+                                            )
+                                        )
+                                    }
+                                )
+                            }
+
+                            else -> Unit
+                        }
+                    }
+                }
+            )
+            Spacer(modifier = Modifier.padding(top = 16.dp))
             DefaultButton(
                 shape = RoundedCornerShape(8.dp),
                 enabled = state.isValid,
@@ -145,6 +219,7 @@ fun ProfileScreen(
         })
     }
 }
+
 
 @Composable
 fun ProfileUpdateSuccessDialog(
@@ -209,4 +284,3 @@ fun ProfileUpdateSuccessDialog(
         }
     }
 }
-

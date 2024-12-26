@@ -3,20 +3,6 @@ package org.digital101.simplewallet.presentation.ui.main.profile.viewModel
 import org.digital101.simplewallet.domain.EditTextState
 import org.digital101.simplewallet.domain.FieldType
 import org.digital101.simplewallet.domain.TextFieldType
-import org.digital101.simplewallet.presentation.ui.auth.login.viewModel.LoginState
-import org.jetbrains.compose.resources.StringResource
-import simplewallet.composeapp.generated.resources.Res
-import simplewallet.composeapp.generated.resources.validator_address
-import simplewallet.composeapp.generated.resources.validator_city
-import simplewallet.composeapp.generated.resources.validator_employ_industry
-import simplewallet.composeapp.generated.resources.validator_employ_name
-import simplewallet.composeapp.generated.resources.validator_employ_occupation
-import simplewallet.composeapp.generated.resources.validator_employ_type
-import simplewallet.composeapp.generated.resources.validator_marital_status
-import simplewallet.composeapp.generated.resources.validator_postcode
-import simplewallet.composeapp.generated.resources.validator_religion
-import simplewallet.composeapp.generated.resources.validator_state
-import simplewallet.composeapp.generated.resources.validator_username
 
 enum class ProfileFieldType(val type: FieldType = FieldType.INPUT) : TextFieldType {
     PERSONAL_DETAILS(FieldType.EXPANDED_HEADER),
@@ -62,7 +48,7 @@ fun EditTextState.updateState(state: ProfileState): ProfileState {
     return when (this.field) {
         ProfileFieldType.USER_NAME -> state.copy(username = this)
         ProfileFieldType.RELIGION -> state.copy(religion = this)
-        ProfileFieldType.MARITAL_STATUS -> state.copy(religion = this)
+        ProfileFieldType.MARITAL_STATUS -> state.copy(maritalStatus = this)
         ProfileFieldType.ADDRESS_LINE_1 -> state.copy(addressLine1 = this)
         ProfileFieldType.ADDRESS_LINE_2 -> state.copy(addressLine2 = this)
         ProfileFieldType.ADDRESS_LINE_3 -> state.copy(addressLine3 = this)

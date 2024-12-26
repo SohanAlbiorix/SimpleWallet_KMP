@@ -43,50 +43,58 @@ class ProfileViewModel(
 
     private fun updateProfile() {
         state.value.data?.let { data ->
-            updateProfileInteract.execute(
-                data = data.copy(
-                    userName = state.value.username.value,
-                    religion = state.value.religion.value,
-                    maritalStatus = state.value.maritalStatus.value,
-                    addresses = data.addresses.also { addresses ->
-                        addresses?.first { address ->
-                            address.addressType?.contains("") == true
-                        }?.also {
-                            it.line1 = state.value.addressLine1.value
-                            it.line2 = state.value.addressLine2.value
-                            it.line3 = state.value.addressLine3.value
-                            it.postcode = state.value.postCode.value
-                            it.city = state.value.city.value
-                            it.state = state.value.state.value
-                        }
-                    },
-                    employmentDetails = data.employmentDetails?.also { details ->
-                        details.first().also {
-                            it.employmentType = state.value.employmentType.value
-                            it.sector = state.value.sector.value
-                            it.occupation = state.value.occupation.value
-                            it.companyName = state.value.nameOfEmployee.value
-                        }
-                    },
+            val updatedAddresses = data.addresses?.map { address ->
+                if (address.addressType?.contains("Mailing Address", ignoreCase = true) == true) {
+                    address.copy(
+                        line1 = state.value.addressLine1.value,
+                        line2 = state.value.addressLine2.value,
+                        line3 = state.value.addressLine3.value,
+                        postcode = state.value.postCode.value,
+                        city = state.value.city.value,
+                        state = state.value.state.value
+                    )
+                } else address
+            }
+
+            val updatedEmploymentDetails = data.employmentDetails?.map { employmentDetail ->
+                employmentDetail.copy(
+                    companyName = state.value.nameOfEmployee.value,
+                    employmentType = state.value.employmentType.value,
+                    occupation = state.value.occupation.value,
+                    sector = state.value.sector.value
                 )
-            ).onEach { dataState ->
-                when (dataState) {
-                    is DataState.NetworkStatus -> {}
-                    is DataState.Response -> {
-                        onTriggerEvent(ProfileEvent.Error(dataState.uiComponent))
-                    }
+            }
 
-                    is DataState.Data -> {
-                        state.value = state.value.copy(isDialogVisible = true)
-                    }
+            val updatedData = data.copy(
+                userName = state.value.username.value,
+                religion = state.value.religion.value,
+                maritalStatus = state.value.maritalStatus.value,
+                addresses = updatedAddresses,
+                employmentDetails = updatedEmploymentDetails
+            )
 
-                    is DataState.Loading -> {
-                        state.value = state.value.copy(
-                            progressBarState = dataState.progressBarState,
-                        )
+            // Print the updated data for debugging purposes
+            println("Updated Data Body: $updatedData")
+
+            updateProfileInteract.execute(data = updatedData)
+                .onEach { dataState ->
+                    when (dataState) {
+                        is DataState.NetworkStatus -> {}
+                        is DataState.Response -> {
+                            onTriggerEvent(ProfileEvent.Error(dataState.uiComponent))
+                        }
+
+                        is DataState.Data -> {
+                            state.value = state.value.copy(isDialogVisible = true)
+                        }
+
+                        is DataState.Loading -> {
+                            state.value = state.value.copy(
+                                progressBarState = dataState.progressBarState
+                            )
+                        }
                     }
-                }
-            }.launchIn(viewModelScope)
+                }.launchIn(viewModelScope)
         }
     }
 
@@ -108,12 +116,15 @@ class ProfileViewModel(
 
                 is DataState.Data -> {
                     val address =
-                        dataState.data?.addresses?.first { it.addressType?.contains("Mailing") == true }
-                    val employmentDetail = dataState.data?.employmentDetails?.first()
+                        if (!dataState.data?.addresses.isNullOrEmpty()) dataState.data?.addresses?.firstOrNull {
+                            it.addressType?.contains("Mailing") == true
+                        } else null
+                    val employmentDetail =
+                        if (!dataState.data?.employmentDetails.isNullOrEmpty()) dataState.data?.employmentDetails?.firstOrNull() else null
                     state.value = state.value.copy(
                         /// personal details
                         username = state.value.username.copy(
-                            value = dataState.data?.userName ?: ""
+                            value = dataState.data?.userName.orEmpty()
                         ),
                         religion = state.value.religion.copy(
                             value = dataState.data?.religion ?: ""
